@@ -289,6 +289,11 @@ form.demo{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .chips label:has(input:checked){background:var(--navy-700);border-color:var(--navy-700);color:#fff}
 form.demo .btn{grid-column:1/-1;justify-content:center}
 .form-note{grid-column:1/-1;font-size:12.5px;color:var(--ink-3);text-align:center}
+.form-note.ok,.form-note.err{font-size:14.5px;font-weight:500;padding:14px 16px;border-radius:12px;text-align:left}
+.form-note.ok{background:#e3f6ea;color:#1a6a3c}
+.form-note.err{background:#fde7e4;color:#9b2b1b}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+form.demo .btn[disabled]{opacity:.7;cursor:wait;transform:none}
 
 /* Footer */
 footer{background:var(--navy-900);color:rgba(255,255,255,.7);padding:72px 0 32px;margin-top:110px}
@@ -795,8 +800,9 @@ footer{background:var(--navy-900);color:rgba(255,255,255,.7);padding:72px 0 32px
           </div>
         </div>
         <div class="fld full"><label for="f-msg">Votre besoin</label><textarea id="f-msg" name="message" rows="3" placeholder="Taille de votre flotte, nombre d'utilisateurs, sociétés…"></textarea></div>
-        <button class="btn btn-blue" type="submit">Demander ma démo <svg><use href="#i-arrow"/></svg></button>
-        <p class="form-note" id="f-note">Votre messagerie s'ouvrira avec la demande pré-remplie.</p>
+        <input class="hp" type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <button class="btn btn-blue" type="submit" id="f-send">Envoyer ma demande <svg><use href="#i-arrow"/></svg></button>
+        <p class="form-note" id="f-note" role="status">Votre demande nous est envoyée directement par e-mail.</p>
       </form>
     </div>
   </div>
@@ -917,18 +923,32 @@ footer{background:var(--navy-900);color:rgba(255,255,255,.7);padding:72px 0 32px
   };
   addEventListener('scroll', count, { passive: true }); count();
 
-  // Demo form → mailto
-  $('#demo').addEventListener('submit', e => {
+  // Demo form → e-mail direct (FormSubmit)
+  $('#demo').addEventListener('submit', async e => {
     e.preventDefault();
-    const f = e.target, note = $('#f-note');
+    const f = e.target, note = $('#f-note'), btn = $('#f-send');
     if (!f.checkValidity()) { f.reportValidity(); return; }
     const d = new FormData(f), m = d.getAll('m');
-    const body = [
-      'Nom : ' + d.get('nom'), 'Société : ' + d.get('societe'), 'E-mail : ' + d.get('email'),
-      'Téléphone : ' + (d.get('tel') || '-'), 'Modules : ' + (m.length ? m.join(', ') : 'Tous'), '', d.get('message') || ''
-    ].join('\n');
-    location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent('Demande de démo LogiPro — ' + d.get('societe'))}&body=${encodeURIComponent(body)}`;
-    note.textContent = 'Merci ! Votre messagerie s’ouvre avec votre demande. Envoyez-la pour finaliser.';
+    if (d.get('_honey')) return;
+    const payload = {
+      'Nom': d.get('nom'), 'Société': d.get('societe'), 'E-mail': d.get('email'),
+      'Téléphone': d.get('tel') || '-', 'Modules': m.length ? m.join(', ') : 'Tous', 'Besoin': d.get('message') || '-',
+      _subject: 'Demande de démo LogiPro — ' + d.get('societe'), _replyto: d.get('email'), _template: 'table', _captcha: 'false'
+    };
+    btn.disabled = true; note.className = 'form-note'; note.textContent = 'Envoi en cours…';
+    try {
+      const r = await fetch('https://formsubmit.co/ajax/' + CONTACT_EMAIL, {
+        method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify(payload)
+      });
+      const j = await r.json().catch(() => ({}));
+      if (!r.ok || String(j.success) === 'false') throw new Error(j.message || r.status);
+      f.reset();
+      note.className = 'form-note ok';
+      note.textContent = 'Merci ' + payload['Nom'] + ' ! Votre demande a bien été envoyée. Nous vous recontactons très vite.';
+    } catch (err) {
+      note.className = 'form-note err';
+      note.innerHTML = 'L’envoi n’a pas abouti. Écrivez-nous à <a href="mailto:' + CONTACT_EMAIL + '"><b>' + CONTACT_EMAIL + '</b></a> ou appelez le <a href="tel:+261344037064"><b>+261 34 40 370 64</b></a>.';
+    } finally { btn.disabled = false; }
   });
 
   $('#yr').textContent = new Date().getFullYear();
