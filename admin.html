@@ -206,6 +206,16 @@ main{padding:28px 32px 100px;max-width:1240px;width:100%}
     <div class="msg err" id="l-err" hidden></div>
     <button class="btn or" type="submit">Se connecter</button>
   </form>
+  <form id="f-setup" autocomplete="on" hidden>
+    <div class="lg"><img src="/assets/img/logipro-icon.png" alt=""><div><h1>Première configuration</h1></div></div>
+    <p class="sub">Créez le mot de passe administrateur. Cette page disparaît dès qu'il est enregistré.</p>
+    <label class="f">E-mail administrateur<input class="in" name="email" type="email" autocomplete="username" required></label>
+    <label class="f">Nouveau mot de passe (10 caractères au moins)<input class="in" name="password" type="password" autocomplete="new-password" minlength="10" required></label>
+    <label class="f">Confirmez le mot de passe<input class="in" name="confirm" type="password" autocomplete="new-password" minlength="10" required></label>
+    <label class="f">Nom de cet appareil<input class="in" name="deviceName" placeholder="Ex. : Mon ordinateur, Mon téléphone" maxlength="40"></label>
+    <div class="msg err" id="s-err" hidden></div>
+    <button class="btn or" type="submit">Créer et se connecter</button>
+  </form>
 </div>
 
 <!-- Application -->
@@ -326,13 +336,16 @@ main{padding:28px 32px 100px;max-width:1240px;width:100%}
     return j;
   }
   function toast(t) { const d = document.createElement('div'); d.className = 'toast'; d.textContent = t; document.body.appendChild(d); setTimeout(() => d.remove(), 2600); }
-  function show(v) { $('#v-login').hidden = v !== 'login'; $('#v-app').hidden = v !== 'app'; }
+  function show(v, first) {
+    $('#v-login').hidden = v !== 'login'; $('#v-app').hidden = v !== 'app';
+    $('#f-login').hidden = !!first; $('#f-setup').hidden = !first;
+  }
 
   // Connexion
   async function boot() {
     try {
       me = await api('me');
-      if (!me.ok) return show('login');
+      if (!me.ok) return show('login', me.firstSetup);
       show('app'); $('#who').textContent = me.email; go('dash'); loadDem(true);
     } catch (e) { show('login'); if (e.message) { $('#l-err').hidden = false; $('#l-err').textContent = e.message; } }
   }
@@ -342,6 +355,16 @@ main{padding:28px 32px 100px;max-width:1240px;width:100%}
     btn.disabled = true; err.hidden = true;
     try { await api('login', { body: Object.fromEntries(new FormData(f)) }); f.password.value = ''; await boot(); }
     catch (x) { err.hidden = false; err.textContent = x.message; }
+    finally { btn.disabled = false; }
+  });
+  $('#f-setup').addEventListener('submit', async e => {
+    e.preventDefault();
+    const f = e.target, btn = f.querySelector('button'), err = $('#s-err');
+    err.hidden = true;
+    if (f.password.value !== f.confirm.value) { err.hidden = false; err.textContent = 'Les deux mots de passe ne sont pas identiques'; return; }
+    btn.disabled = true;
+    try { await api('setup', { body: Object.fromEntries(new FormData(f)) }); f.password.value = f.confirm.value = ''; await boot(); toast('Mot de passe créé'); }
+    catch (x) { err.hidden = false; err.textContent = x.message; if (/déjà créé/.test(x.message)) setTimeout(() => show('login'), 1500); }
     finally { btn.disabled = false; }
   });
   const logout = async () => { await api('logout', { body: {} }).catch(() => {}); show('login'); };

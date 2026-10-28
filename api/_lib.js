@@ -81,6 +81,8 @@ function makePassword(password) {
   const h = crypto.pbkdf2Sync(String(password), salt, 210000, 32, 'sha256');
   return `pbkdf2$210000$${salt.toString('base64')}$${h.toString('base64')}`;
 }
+// Empreinte du mot de passe : celle créée depuis l'admin (Redis), sinon ADMIN_PASS_HASH ; null = première configuration à faire.
+const adminPass = async () => (await redis('GET', P + 'adm:pass')) || process.env.ADMIN_PASS_HASH || null;
 const secret = () => crypto.createHash('sha256').update('lpw-admin|' + R_TOK + '|' + (process.env.ADMIN_PASS_HASH || '')).digest();
 function signSession(deviceId, days = 30) {
   const p = Buffer.from(JSON.stringify({ d: deviceId, e: Date.now() + days * 864e5 })).toString('base64url');
@@ -119,4 +121,4 @@ async function sendMail({ to, toName, subject, text, replyTo }) {
   return true;
 }
 
-module.exports = { P, ADMIN_EMAIL, redis, pipe, send, body, cookies, setCookie, ip, geo, ua, hash, today, clip, verifyPassword, makePassword, signSession, session, mailReady, sendMail, dbReady: () => !!(R_URL && R_TOK) };
+module.exports = { P, ADMIN_EMAIL, redis, pipe, send, body, cookies, setCookie, ip, geo, ua, hash, today, clip, verifyPassword, makePassword, adminPass, signSession, session, mailReady, sendMail, dbReady: () => !!(R_URL && R_TOK) };

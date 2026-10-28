@@ -9,15 +9,35 @@ async function login(req, res) {
   const b = await L.body(req);
   const fk = L.P + 'adm:fail:' + L.hash(L.ip(req));
   if (+(await L.redis('GET', fk)) >= 5) return L.send(res, 429, { error: 'Trop d’essais. Réessayez dans 15 minutes.' });
-  const stored = (await L.redis('GET', L.P + 'adm:pass')) || process.env.ADMIN_PASS_HASH;
-  if (!stored) return L.send(res, 503, { error: 'Mot de passe administrateur non configuré sur le serveur (ADMIN_PASS_HASH).' });
+  const stored = await L.adminPass();
+  if (!stored) return L.send(res, 409, { error: 'Aucun mot de passe n’est encore créé.', firstSetup: true });
   const okUser = String(b.email || '').trim().toLowerCase() === L.ADMIN_EMAIL;
   if (!okUser || !L.verifyPassword(b.password || '', stored)) {
     await L.pipe([['INCR', fk], ['EXPIRE', fk, 900]]);
     return L.send(res, 401, { error: 'E-mail ou mot de passe incorrect.' });
   }
   await L.redis('DEL', fk);
+  await openSession(req, res, b);
+}
 
+// Première configuration : possible une seule fois, tant qu'aucun mot de passe n'existe.
+async function setup(req, res) {
+  const b = await L.body(req);
+  const fk = L.P + 'adm:fail:' + L.hash(L.ip(req));
+  if (+(await L.redis('GET', fk)) >= 5) return L.send(res, 429, { error: 'Trop d’essais. Réessayez dans 15 minutes.' });
+  if (await L.adminPass()) return L.send(res, 403, { error: 'Le mot de passe est déjà créé : connectez-vous.' });
+  if (String(b.email || '').trim().toLowerCase() !== L.ADMIN_EMAIL) {
+    await L.pipe([['INCR', fk], ['EXPIRE', fk, 900]]);
+    return L.send(res, 401, { error: 'Cette adresse e-mail n’est pas celle de l’administrateur.' });
+  }
+  const pw = String(b.password || '');
+  if (pw.length < 10) return L.send(res, 400, { error: 'Au moins 10 caractères' });
+  if (pw !== String(b.confirm || '')) return L.send(res, 400, { error: 'Les deux mots de passe ne sont pas identiques' });
+  if (await L.redis('SET', L.P + 'adm:pass', L.makePassword(pw), 'NX') !== 'OK') return L.send(res, 403, { error: 'Le mot de passe est déjà créé : connectez-vous.' });
+  await openSession(req, res, b);
+}
+
+async function openSession(req, res, b) {
   const u = L.ua(req), g = L.geo(req);
   let id = L.cookies(req).lp_dev;
   let dev = id && await L.redis('HGET', L.P + 'adm:dev', id);
@@ -120,7 +140,7 @@ async function settings(req, res, s) {
   }
   if (b.max) await L.redis('SET', L.P + 'adm:max', Math.min(5, Math.max(1, +b.max)));
   if (b.newPassword) {
-    const stored = (await L.redis('GET', L.P + 'adm:pass')) || process.env.ADMIN_PASS_HASH;
+    const stored = await L.adminPass();
     if (!L.verifyPassword(b.currentPassword || '', stored)) return L.send(res, 401, { error: 'Mot de passe actuel incorrect' });
     if (String(b.newPassword).length < 10) return L.send(res, 400, { error: 'Au moins 10 caractères' });
     await L.redis('SET', L.P + 'adm:pass', L.makePassword(b.newPassword));
@@ -133,8 +153,9 @@ module.exports = async (req, res) => {
   try {
     if (!L.dbReady()) return L.send(res, 503, { error: 'Base de données non configurée (intégration Upstash Redis à ajouter sur Vercel).', setup: true });
     if (a === 'login' && req.method === 'POST') return await login(req, res);
+    if (a === 'setup' && req.method === 'POST') return await setup(req, res);
     const s = await L.session(req);
-    if (a === 'me') return L.send(res, 200, s ? { ok: true, email: L.ADMIN_EMAIL, device: s.device, mail: L.mailReady() } : { ok: false });
+    if (a === 'me') return L.send(res, 200, s ? { ok: true, email: L.ADMIN_EMAIL, device: s.device, mail: L.mailReady() } : { ok: false, firstSetup: !(await L.adminPass()) });
     if (!s) return L.send(res, 401, { error: 'Session expirée, reconnectez-vous.' });
     if (a === 'logout') { L.setCookie(res, 'lp_adm', '', 0); return L.send(res, 200, { ok: true }); }
     if (a === 'stats') return await stats(req, res);
