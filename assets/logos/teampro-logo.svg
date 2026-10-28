@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 200" role="img" aria-label="TeamPro — Messagerie de l'équipe">
+  <defs>
+    <linearGradient id="tpg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#173D85"/><stop offset="1" stop-color="#0D2C66"/></linearGradient>
+    <linearGradient id="tpg2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F7B85A"/><stop offset="1" stop-color="#F39C1E"/></linearGradient>
+  </defs>
+  <rect width="320" height="200" fill="#fff"/>
+  <!-- Bulle principale (bleu LogiPro) -->
+  <path d="M98 26h92c17 0 30 13 30 30v40c0 17-13 30-30 30h-52l-30 24 6-24h-16c-17 0-30-13-30-30V56c0-17 13-30 30-30z" fill="url(#tpg1)"/>
+  <circle cx="114" cy="76" r="9" fill="#fff"/><circle cx="144" cy="76" r="9" fill="#fff"/><circle cx="174" cy="76" r="9" fill="#fff"/>
+  <!-- Bulle de réponse (orange) -->
+  <path d="M206 70h38c13 0 24 11 24 24v24c0 13-11 24-24 24h-6l4 20-24-20h-12c-13 0-24-11-24-24v-4h22c20 0 34-14 34-34V70z" fill="url(#tpg2)"/>
+  <path d="M226 108l9 9 17-19" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="160" y="186" text-anchor="middle" font-family="Montserrat,'Segoe UI',Arial,sans-serif" font-size="34" font-weight="800" fill="#0D2C66">Team<tspan fill="#F39C1E">Pro</tspan></text>
+</svg>
