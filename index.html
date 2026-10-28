@@ -18,7 +18,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="preload" as="image" href="/assets/img/navire-ts-indian-ocean.webp">
+<link rel="preload" as="image" href="/assets/img/navire-cargo-1.webp">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -268,6 +268,14 @@ section{position:relative}
 .cta ul{list-style:none;padding:0;margin:24px 0 0;display:flex;flex-direction:column;gap:10px}
 .cta ul li{display:flex;gap:10px;align-items:center;color:var(--ink-2);font-size:15px}
 .cta ul svg{width:20px;height:20px;color:#1a7a43;flex:none}
+.coords{display:flex;flex-direction:column;gap:10px;margin-top:28px;padding-top:24px;border-top:1px solid var(--line)}
+.coord{display:flex;align-items:center;gap:14px;padding:12px 14px;border:1px solid var(--line);border-radius:14px;transition:border-color .2s,box-shadow .2s}
+.coord:hover{border-color:var(--blue-400);box-shadow:var(--shadow-sm)}
+.coord .ci{flex:none;width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:var(--blue-100);color:var(--blue-500)}
+.coord.wa .ci{background:#e3f6ea;color:#1a7a43}
+.coord .ci svg{width:20px;height:20px}
+.coord small{display:block;font-size:12px;color:var(--ink-3)}
+.coord b{font-family:var(--font-head);font-size:15.5px;color:var(--navy-800);word-break:break-all}
 form.demo{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .fld{display:flex;flex-direction:column;gap:6px}
 .fld.full{grid-column:1/-1}
@@ -368,10 +376,10 @@ footer{background:var(--navy-900);color:rgba(255,255,255,.7);padding:72px 0 32px
 <!-- ===== Hero ===== -->
 <section class="hero" aria-label="Présentation">
   <div class="hero-slides" id="slides">
-    <img class="on" src="/assets/img/navire-ts-indian-ocean.webp" alt="Navire TS Indian Ocean à quai" data-cap="Shipping · Navire TS Indian Ocean">
+    <img class="on" src="/assets/img/navire-cargo-1.webp" alt="Navire porte-conteneurs à quai" data-cap="Shipping · Suivi des navires">
     <img src="/assets/img/camions-shacman-conteneurs.webp" alt="Camions Shacman F3000 chargés de conteneurs" data-cap="Logistique · Camions Shacman F3000" loading="lazy">
     <img src="/assets/img/reach-stacker-kalmar.webp" alt="Reach stacker Kalmar dans un dépôt de conteneurs" data-cap="Gestion de Yard · Reach stacker Kalmar" loading="lazy">
-    <img src="/assets/img/navire-baltic-trader.webp" alt="Navire Baltic Trader" data-cap="Shipping · Navire Baltic Trader" loading="lazy">
+    <img src="/assets/img/navire-cargo-2.webp" alt="Navire de charge au port" data-cap="Shipping · Rotations et escales" loading="lazy">
     <img src="/assets/img/camion-shacman.webp" alt="Camion Shacman sur la route" data-cap="Gestion Carburant · Flotte routière" loading="lazy">
   </div>
   <div class="wrap">
@@ -389,7 +397,7 @@ footer{background:var(--navy-900);color:rgba(255,255,255,.7);padding:72px 0 32px
       <div><strong>24/7</strong><span>web, mobile et bureau</span></div>
     </div>
   </div>
-  <div class="hero-cap"><span id="cap">Shipping · Navire TS Indian Ocean</span><div class="dots" id="dots"></div></div>
+  <div class="hero-cap"><span id="cap">Shipping · Suivi des navires</span><div class="dots" id="dots"></div></div>
 </section>
 
 <div class="strip" aria-hidden="true">
@@ -516,7 +524,7 @@ footer{background:var(--navy-900);color:rgba(255,255,255,.7);padding:72px 0 32px
         </ul>
       </div>
       <div class="visual">
-        <img src="/assets/img/navire-baltic-trader.webp" alt="Navire Baltic Trader en mer" loading="lazy">
+        <img src="/assets/img/navire-cargo-2.webp" alt="Navire de charge au port" loading="lazy">
         <div class="badge-logo"><img src="/assets/logos/shipping-logo.svg" alt=""></div>
         <div class="float-card fc-a"><small>Voyage en cours</small><strong>En mer → POD</strong><span class="pill b">ETA calculée</span></div>
         <div class="float-card fc-b"><small>Rotation</small><strong>Objectif tenu</strong><span class="pill g">✓</span></div>
@@ -764,6 +772,11 @@ footer{background:var(--navy-900);color:rgba(255,255,255,.7);padding:72px 0 32px
           <li><svg><use href="#i-check"/></svg>Reprise de vos données Excel existantes</li>
           <li><svg><use href="#i-check"/></svg>Accompagnement et formation de vos équipes</li>
         </ul>
+        <div class="coords">
+          <a class="coord" href="mailto:chilanceratiarson@gmail.com"><span class="ci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 6l-10 7L2 6"/></svg></span><span><small>E-mail</small><b>chilanceratiarson@gmail.com</b></span></a>
+          <a class="coord" href="tel:+261344037064"><span class="ci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3.1 19.5 19.5 0 01-6-6A19.8 19.8 0 012.1 4.2 2 2 0 014.1 2h3a2 2 0 012 1.7c.1.9.4 1.8.7 2.7a2 2 0 01-.5 2.1L8 9.8a16 16 0 006 6l1.3-1.3a2 2 0 012.1-.4c.9.3 1.8.6 2.7.7a2 2 0 011.7 2z"/></svg></span><span><small>Téléphone</small><b>+261 34 40 370 64</b></span></a>
+          <a class="coord wa" href="https://wa.me/261344037064" target="_blank" rel="noopener"><span class="ci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 01-12.4 7.4L3 21l2.1-5.4A8.4 8.4 0 1121 11.5z"/></svg></span><span><small>WhatsApp</small><b>Écrire sur WhatsApp</b></span></a>
+        </div>
       </div>
       <form class="demo" id="demo" novalidate>
         <div class="fld"><label for="f-nom">Nom complet</label><input id="f-nom" name="nom" autocomplete="name" required></div>
@@ -799,7 +812,7 @@ footer{background:var(--navy-900);color:rgba(255,255,255,.7);padding:72px 0 32px
       </div>
       <div><h4>Finance & RH</h4><ul><li><a href="#explorer" data-go="compta">Comptabilité</a></li><li><a href="#explorer" data-go="peoplepro">PeoplePro</a></li><li><a href="#explorer" data-go="teampro">TeamPro</a></li></ul></div>
       <div><h4>Opérations</h4><ul><li><a href="#explorer" data-go="carburant">Gestion Carburant</a></li><li><a href="#explorer" data-go="shipping">Shipping</a></li><li><a href="#explorer" data-go="logistique">Logistique</a></li><li><a href="#explorer" data-go="yard">Gestion de Yard</a></li></ul></div>
-      <div><h4>LogiPro</h4><ul><li><a href="#contact">Demander une démo</a></li><li><a href="https://bass-de-donne-nekd.vercel.app" rel="noopener">Se connecter</a></li><li><a href="#securite">Sécurité</a></li><li><a href="#faq">FAQ</a></li></ul></div>
+      <div><h4>Contact</h4><ul><li><a href="mailto:chilanceratiarson@gmail.com">chilanceratiarson@gmail.com</a></li><li><a href="tel:+261344037064">+261 34 40 370 64</a></li><li><a href="https://wa.me/261344037064" target="_blank" rel="noopener">WhatsApp</a></li><li><a href="#contact">Demander une démo</a></li><li><a href="https://bass-de-donne-nekd.vercel.app" rel="noopener">Se connecter</a></li></ul></div>
     </div>
     <div class="ft-bot"><span>© <span id="yr">2026</span> LogiPro. Tous droits réservés.</span><span>Conçu à Madagascar 🇲🇬</span></div>
   </div>
@@ -807,7 +820,7 @@ footer{background:var(--navy-900);color:rgba(255,255,255,.7);padding:72px 0 32px
 
 <script>
 (() => {
-  const CONTACT_EMAIL = 'payable@scservices.mg';
+  const CONTACT_EMAIL = 'chilanceratiarson@gmail.com';
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => [...r.querySelectorAll(s)];
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
