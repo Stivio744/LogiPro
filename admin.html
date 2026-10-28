@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>LogiPro Admin</title>
+<meta name="theme-color" content="#0B2557">
+<link rel="manifest" href="/admin.webmanifest">
+<link rel="icon" type="image/png" href="/assets/img/logipro-icon-32.png">
+<link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="LogiPro Admin">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0b2557; --navy-2:#173d85; --blue:#1f6fd1; --blue-l:#e6f0fd; --orange:#f39c1e; --orange-l:#fff3e0;
+  --ink:#0f1b33; --ink-2:#44526b; --ink-3:#7a869b; --line:#e3e8f1; --bg:#f3f6fb; --card:#fff;
+  --ok:#1a7a43; --ok-l:#e3f6ea; --err:#b2321f; --err-l:#fde7e4; --vio:#6d28d9; --vio-l:#efe7fd;
+  --r:14px; --sh:0 1px 2px rgba(11,37,87,.06),0 4px 14px rgba(11,37,87,.06);
+  --fh:"Plus Jakarta Sans",system-ui,sans-serif; --fb:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme:dark){:root{
+  --ink:#e7ecf5; --ink-2:#b4bfd2; --ink-3:#8590a6; --line:#26324a; --bg:#0a1324; --card:#111c33;
+  --blue-l:#16294b; --orange-l:#3a2a12; --ok-l:#123a26; --err-l:#43201b; --vio-l:#2a1d4a;
+}}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{font-family:var(--fb);background:var(--bg);color:var(--ink);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:var(--fh);margin:0;letter-spacing:-.01em}
+button,input,select,textarea{font:inherit;color:inherit}
+a{color:var(--blue)}
+[hidden]{display:none!important}
+
+/* Login */
+.login{min-height:100%;display:grid;place-items:center;padding:24px;background:radial-gradient(circle at 80% 0%,rgba(243,156,30,.25),transparent 40%),linear-gradient(150deg,#061a40,#0d2c66)}
+.login form{width:100%;max-width:400px;background:var(--card);border-radius:22px;padding:32px 28px;box-shadow:0 30px 60px -20px rgba(0,0,0,.5);display:flex;flex-direction:column;gap:14px}
+.login .lg{display:flex;align-items:center;gap:12px;margin-bottom:6px}
+.login .lg img{width:46px;height:46px;border-radius:12px;background:#fff}
+.login h1{font-size:22px;color:var(--ink)}
+.login p.sub{margin:0 0 6px;color:var(--ink-3);font-size:14px}
+label.f{display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:600}
+.in{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--bg);outline:0;transition:border-color .2s,box-shadow .2s}
+.in:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(31,111,209,.15)}
+textarea.in{resize:vertical;min-height:90px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:12px;padding:11px 18px;font-family:var(--fh);font-weight:700;font-size:14px;cursor:pointer;background:var(--navy);color:#fff;transition:filter .2s,transform .1s;text-decoration:none;white-space:nowrap}
+:root .btn{color:#fff}
+.btn:hover{filter:brightness(1.15)}.btn:active{transform:scale(.98)}
+.btn[disabled]{opacity:.6;cursor:wait}
+.btn.or{background:linear-gradient(135deg,#f7b85a,#f39c1e);color:#1d1300}
+.btn.gh{background:var(--card);color:var(--ink);border:1px solid var(--line)}
+.btn.rd{background:var(--err-l);color:var(--err)}
+.btn.sm{padding:7px 12px;font-size:13px;border-radius:10px}
+.msg{font-size:14px;padding:10px 12px;border-radius:10px}
+.msg.err{background:var(--err-l);color:var(--err)}
+.msg.ok{background:var(--ok-l);color:var(--ok)}
+
+/* Shell */
+.app{display:grid;grid-template-columns:240px 1fr;min-height:100%}
+.side{background:linear-gradient(180deg,#061a40,#0b2557);color:#fff;padding:20px 14px;position:sticky;top:0;height:100vh;display:flex;flex-direction:column;gap:6px}
+.side .lg{display:flex;align-items:center;gap:10px;padding:4px 8px 18px;font-family:var(--fh);font-weight:800;font-size:18px}
+.side .lg img{width:36px;height:36px;border-radius:10px;background:#fff}
+.side .lg small{display:block;font-family:var(--fb);font-weight:500;font-size:12px;color:rgba(255,255,255,.6)}
+.nav{display:flex;flex-direction:column;gap:4px}
+.nav button{display:flex;align-items:center;gap:12px;background:none;border:0;color:rgba(255,255,255,.75);padding:11px 12px;border-radius:12px;cursor:pointer;font-weight:600;text-align:left}
+.nav button svg{width:20px;height:20px;flex:none}
+.nav button:hover{background:rgba(255,255,255,.08);color:#fff}
+.nav button.on{background:rgba(255,255,255,.14);color:#fff}
+.nav .bd{margin-left:auto;background:var(--orange);color:#1d1300;font-size:11.5px;font-weight:800;border-radius:999px;padding:1px 8px}
+.side .foot{margin-top:auto;font-size:12.5px;color:rgba(255,255,255,.6);padding:8px}
+.side .foot button{background:none;border:1px solid rgba(255,255,255,.25);color:#fff;border-radius:10px;padding:8px 12px;cursor:pointer;width:100%;margin-top:10px}
+main{padding:28px 32px 100px;max-width:1240px;width:100%}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:22px;flex-wrap:wrap}
+.top h2{font-size:26px}
+.top p{margin:2px 0 0;color:var(--ink-3);font-size:14px}
+.seg{display:inline-flex;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:4px}
+.seg button{border:0;background:none;padding:6px 12px;border-radius:9px;cursor:pointer;font-weight:600;font-size:13px;color:var(--ink-2)}
+.seg button.on{background:var(--navy);color:#fff}
+
+.grid{display:grid;gap:16px}
+.k4{grid-template-columns:repeat(4,1fr)}
+.k2{grid-template-columns:repeat(2,1fr)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:18px;box-shadow:var(--sh)}
+.card h3{font-size:15px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.kpi small{color:var(--ink-3);font-size:13px;font-weight:500}
+.kpi b{display:block;font-family:var(--fh);font-size:30px;font-weight:800;margin-top:2px}
+.kpi span{font-size:12.5px;color:var(--ink-3)}
+.kpi.hl{background:linear-gradient(135deg,#0d2c66,#1f6fd1);color:#fff;border:0}
+.kpi.hl small,.kpi.hl span{color:rgba(255,255,255,.75)}
+.chart{display:flex;align-items:flex-end;gap:3px;height:180px;padding-top:10px}
+.chart .c{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:stretch;height:100%;position:relative;min-width:0}
+.chart .c i{display:block;background:var(--blue);border-radius:4px 4px 1px 1px;min-height:2px}
+.chart .c i.u{position:absolute;bottom:0;left:25%;right:25%;background:var(--orange);opacity:.95}
+.chart .c:hover i{filter:brightness(1.2)}
+.axis{display:flex;justify-content:space-between;font-size:11.5px;color:var(--ink-3);margin-top:6px}
+.legend{display:flex;gap:14px;font-size:12.5px;color:var(--ink-2);font-weight:500}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.bars{display:flex;flex-direction:column;gap:9px}
+.bar{display:grid;grid-template-columns:1fr auto;gap:4px 10px;font-size:13.5px}
+.bar span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bar em{font-style:normal;font-weight:600}
+.bar u{grid-column:1/-1;height:6px;border-radius:4px;background:var(--blue-l);text-decoration:none;overflow:hidden}
+.bar u s{display:block;height:100%;background:var(--blue);border-radius:4px}
+.empty{color:var(--ink-3);font-size:14px;text-align:center;padding:24px 8px}
+
+/* Demandes */
+.tools{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;align-items:center}
+.tools .in{max-width:280px;padding:9px 12px}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:6px 12px;font-size:13px;font-weight:600;cursor:pointer;color:var(--ink-2)}
+.chip.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+.dl{display:flex;flex-direction:column;gap:10px}
+.dm{display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;cursor:pointer;transition:border-color .2s,box-shadow .2s;text-align:left;width:100%}
+.dm:hover{border-color:var(--blue);box-shadow:var(--sh)}
+.av{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;font-family:var(--fh);font-weight:800;background:var(--blue-l);color:var(--blue)}
+.dm b{display:block;font-size:15px}
+.dm .sub{font-size:13px;color:var(--ink-3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dm .rt{text-align:right;font-size:12.5px;color:var(--ink-3);display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+.st{display:inline-block;font-size:12px;font-weight:700;padding:3px 10px;border-radius:999px;white-space:nowrap}
+.st-nouvelle{background:var(--orange-l);color:#b86a00}
+.st-en-cours{background:var(--blue-l);color:var(--blue)}
+.st-répondue{background:var(--ok-l);color:var(--ok)}
+.st-démo-planifiée{background:var(--vio-l);color:var(--vio)}
+.st-client{background:#0b2557;color:#fff}
+.st-archivée{background:var(--line);color:var(--ink-3)}
+
+/* Panneau détail */
+.ov{position:fixed;inset:0;background:rgba(6,26,64,.45);z-index:40;display:flex;justify-content:flex-end;animation:f .2s}
+@keyframes f{from{opacity:0}}
+.pn{width:min(620px,100%);height:100%;background:var(--bg);overflow:auto;padding:22px 22px 40px;animation:s .25s ease}
+@keyframes s{from{transform:translateX(40px)}}
+.pn .hd{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:16px}
+.pn h2{font-size:22px}
+.x{border:0;background:var(--card);border:1px solid var(--line);width:38px;height:38px;border-radius:10px;cursor:pointer;font-size:20px;flex:none}
+.info{display:grid;grid-template-columns:auto 1fr;gap:8px 14px;font-size:14px}
+.info dt{color:var(--ink-3)}
+.info dd{margin:0;font-weight:500;word-break:break-word}
+.qa{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.hist{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px}
+.hist li{font-size:13.5px;border-left:3px solid var(--line);padding-left:12px}
+.hist li small{display:block;color:var(--ink-3);font-size:12px}
+.hist li pre{white-space:pre-wrap;font-family:inherit;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px;margin:6px 0 0;font-size:13px}
+.stack{display:flex;flex-direction:column;gap:14px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+
+/* Visiteurs */
+.tbl{width:100%;border-collapse:collapse;font-size:13.5px}
+.tbl th{text-align:left;font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-3);font-weight:600;padding:8px 10px;border-bottom:1px solid var(--line)}
+.tbl td{padding:10px;border-bottom:1px solid var(--line);vertical-align:top}
+.tbl-wrap{overflow-x:auto}
+
+.dev{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
+.dev:last-child{border-bottom:0}
+.dev .ic{width:40px;height:40px;border-radius:12px;background:var(--blue-l);color:var(--blue);display:grid;place-items:center;flex:none}
+.dev .ic svg{width:20px;height:20px}
+.dev b{display:block}.dev small{color:var(--ink-3)}
+.dev .me{font-size:11.5px;font-weight:700;color:var(--ok);background:var(--ok-l);padding:2px 8px;border-radius:999px;margin-left:6px}
+.toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:12px;font-size:14px;z-index:60;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+
+/* Téléphone */
+.tabbar{display:none}
+@media (max-width:860px){
+  .app{grid-template-columns:1fr}
+  .side{display:none}
+  main{padding:18px 16px 110px}
+  .top h2{font-size:22px}
+  .k4{grid-template-columns:repeat(2,1fr)}
+  .k2{grid-template-columns:1fr}
+  .kpi b{font-size:24px}
+  .tabbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--card);border-top:1px solid var(--line);padding:6px 6px calc(6px + env(safe-area-inset-bottom))}
+  .tabbar button{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;background:none;border:0;font-size:11px;font-weight:600;color:var(--ink-3);padding:6px 0;position:relative;cursor:pointer}
+  .tabbar button svg{width:22px;height:22px}
+  .tabbar button.on{color:var(--blue)}
+  .tabbar .bd{position:absolute;top:0;left:calc(50% + 6px);background:var(--orange);color:#1d1300;font-size:10px;font-weight:800;border-radius:999px;padding:0 6px}
+  .mtop{display:flex!important}
+  .dm{grid-template-columns:auto 1fr}
+  .dm .rt{grid-column:1/-1;flex-direction:row;justify-content:space-between;align-items:center}
+  .pn{padding:16px 16px 40px}
+  .tools .in{max-width:none;flex:1}
+}
+.mtop{display:none;align-items:center;justify-content:space-between;margin:-4px 0 14px}
+.mtop .lg{display:flex;align-items:center;gap:10px;font-family:var(--fh);font-weight:800}
+.mtop img{width:32px;height:32px;border-radius:9px;background:#fff}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-dash" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 6l-10 7L2 6"/></symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="i-gear" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 00.3 1.8l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.7 1.7 0 00-1.8-.3 1.7 1.7 0 00-1 1.5V21a2 2 0 11-4 0v-.1a1.7 1.7 0 00-1.1-1.5 1.7 1.7 0 00-1.8.3l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.7 1.7 0 00.3-1.8 1.7 1.7 0 00-1.5-1H3a2 2 0 110-4h.1a1.7 1.7 0 001.5-1.1 1.7 1.7 0 00-.3-1.8l-.1-.1a2 2 0 112.8-2.8l.1.1a1.7 1.7 0 001.8.3H9a1.7 1.7 0 001-1.5V3a2 2 0 114 0v.1a1.7 1.7 0 001 1.5 1.7 1.7 0 001.8-.3l.1-.1a2 2 0 112.8 2.8l-.1.1a1.7 1.7 0 00-.3 1.8V9a1.7 1.7 0 001.5 1H21a2 2 0 110 4h-.1a1.7 1.7 0 00-1.5 1z"/></symbol>
+  <symbol id="i-pc" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></symbol>
+  <symbol id="i-ph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M11 18h2"/></symbol>
+</svg>
+
+<!-- Connexion -->
+<div class="login" id="v-login" hidden>
+  <form id="f-login" autocomplete="on">
+    <div class="lg"><img src="/assets/img/logipro-icon.png" alt=""><div><h1>LogiPro Admin</h1></div></div>
+    <p class="sub">Espace privé, réservé aux appareils autorisés.</p>
+    <label class="f">E-mail<input class="in" name="email" type="email" autocomplete="username" required></label>
+    <label class="f">Mot de passe<input class="in" name="password" type="password" autocomplete="current-password" required></label>
+    <label class="f">Nom de cet appareil<input class="in" name="deviceName" placeholder="Ex. : Mon ordinateur, Mon téléphone" maxlength="40"></label>
+    <div class="msg err" id="l-err" hidden></div>
+    <button class="btn or" type="submit">Se connecter</button>
+  </form>
+</div>
+
+<!-- Application -->
+<div class="app" id="v-app" hidden>
+  <aside class="side">
+    <div class="lg"><img src="/assets/img/logipro-icon.png" alt=""><div>LogiPro<small>Administration</small></div></div>
+    <nav class="nav" id="nav">
+      <button data-v="dash" class="on"><svg><use href="#i-dash"/></svg>Tableau de bord</button>
+      <button data-v="dem"><svg><use href="#i-mail"/></svg>Demandes<span class="bd" data-badge hidden></span></button>
+      <button data-v="vis"><svg><use href="#i-eye"/></svg>Visiteurs</button>
+      <button data-v="set"><svg><use href="#i-gear"/></svg>Paramètres</button>
+    </nav>
+    <div class="foot"><span id="who"></span><button id="b-out">Se déconnecter</button></div>
+  </aside>
+
+  <main>
+    <div class="mtop"><div class="lg"><img src="/assets/img/logipro-icon.png" alt="">LogiPro Admin</div><button class="btn gh sm" id="b-out2">Quitter</button></div>
+
+    <!-- Tableau de bord -->
+    <section data-view="dash">
+      <div class="top"><div><h2>Tableau de bord</h2><p>Visites du site et demandes de démo</p></div>
+        <div class="seg" id="per"><button data-d="7">7 j</button><button data-d="30" class="on">30 j</button><button data-d="90">90 j</button></div></div>
+      <div class="grid k4" style="margin-bottom:16px">
+        <div class="card kpi hl"><small>Demandes à traiter</small><b id="k-new">–</b><span id="k-dem">–</span></div>
+        <div class="card kpi"><small>Visiteurs uniques</small><b id="k-uni">–</b><span id="k-per">sur la période</span></div>
+        <div class="card kpi"><small>Pages vues</small><b id="k-views">–</b><span>sur la période</span></div>
+        <div class="card kpi"><small>Aujourd'hui</small><b id="k-today">–</b><span id="k-total">–</span></div>
+      </div>
+      <div class="card" style="margin-bottom:16px">
+        <h3>Fréquentation <span class="legend"><span><i style="background:var(--blue)"></i>Pages vues</span><span><i style="background:var(--orange)"></i>Visiteurs</span></span></h3>
+        <div class="chart" id="chart"></div><div class="axis" id="axis"></div>
+      </div>
+      <div class="grid k2">
+        <div class="card"><h3>Pays</h3><div class="bars" id="t-pays"></div></div>
+        <div class="card"><h3>Villes</h3><div class="bars" id="t-villes"></div></div>
+        <div class="card"><h3>Sources</h3><div class="bars" id="t-sources"></div></div>
+        <div class="card"><h3>Appareils</h3><div class="bars" id="t-appareils"></div></div>
+      </div>
+    </section>
+
+    <!-- Demandes -->
+    <section data-view="dem" hidden>
+      <div class="top"><div><h2>Demandes de démo</h2><p id="d-count">–</p></div><button class="btn gh sm" id="b-ref">Actualiser</button></div>
+      <div class="tools"><input class="in" id="d-q" type="search" placeholder="Rechercher un nom, une société, un e-mail…"><div class="chips" id="d-f"></div></div>
+      <div class="dl" id="d-list"></div>
+    </section>
+
+    <!-- Visiteurs -->
+    <section data-view="vis" hidden>
+      <div class="top"><div><h2>Visiteurs</h2><p>Les 200 dernières visites (vos propres visites ne sont pas comptées)</p></div><button class="btn gh sm" id="b-vref">Actualiser</button></div>
+      <div class="card tbl-wrap"><table class="tbl"><thead><tr><th>Date</th><th>Lieu</th><th>Page</th><th>Source</th><th>Appareil</th></tr></thead><tbody id="v-body"></tbody></table></div>
+    </section>
+
+    <!-- Paramètres -->
+    <section data-view="set" hidden>
+      <div class="top"><div><h2>Paramètres</h2><p>Sécurité et appareils autorisés</p></div></div>
+      <div class="grid k2">
+        <div class="card">
+          <h3>Appareils autorisés</h3>
+          <p style="margin:0 0 6px;color:var(--ink-3);font-size:13.5px">Seuls ces appareils peuvent ouvrir l'administration, même avec le bon mot de passe.</p>
+          <div id="devs"></div>
+          <div class="row" style="margin-top:12px"><span style="font-size:13.5px">Nombre maximal d'appareils</span>
+            <select class="in" id="max" style="width:auto;padding:7px 10px"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div>
+        </div>
+        <div class="card">
+          <h3>Changer le mot de passe</h3>
+          <form id="f-pw" class="stack">
+            <label class="f">Mot de passe actuel<input class="in" name="currentPassword" type="password" autocomplete="current-password" required></label>
+            <label class="f">Nouveau mot de passe (10 caractères au moins)<input class="in" name="newPassword" type="password" autocomplete="new-password" minlength="10" required></label>
+            <button class="btn" type="submit">Enregistrer</button>
+          </form>
+        </div>
+        <div class="card">
+          <h3>Installer l'application</h3>
+          <div style="font-size:14px;color:var(--ink-2)" class="stack">
+            <div><b>Ordinateur (Chrome / Edge)</b> : icône d'installation ⊕ à droite de la barre d'adresse.</div>
+            <div><b>Android</b> : menu ⋮ › « Ajouter à l'écran d'accueil ».</div>
+            <div><b>iPhone</b> : Safari › Partager › « Sur l'écran d'accueil ».</div>
+            <button class="btn or" id="b-inst" hidden>Installer maintenant</button>
+          </div>
+        </div>
+        <div class="card">
+          <h3>État du service</h3>
+          <div class="stack" style="font-size:14px" id="cfg"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <nav class="tabbar" id="tabbar">
+    <button data-v="dash" class="on"><svg><use href="#i-dash"/></svg>Tableau</button>
+    <button data-v="dem"><svg><use href="#i-mail"/></svg>Demandes<span class="bd" data-badge hidden></span></button>
+    <button data-v="vis"><svg><use href="#i-eye"/></svg>Visiteurs</button>
+    <button data-v="set"><svg><use href="#i-gear"/></svg>Réglages</button>
+  </nav>
+</div>
+
+<script>
+(() => {
+  const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const STATUTS = ['nouvelle', 'en cours', 'répondue', 'démo planifiée', 'client', 'archivée'];
+  const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const cls = s => 'st st-' + String(s).replace(/ /g, '-');
+  const fmt = t => new Date(t).toLocaleString('fr-FR', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
+  let regions; try { regions = new Intl.DisplayNames(['fr'], { type: 'region' }); } catch {}
+  const flag = c => c && c.length === 2 ? String.fromCodePoint(...[...c.toUpperCase()].map(x => 127397 + x.charCodeAt(0))) : '🌐';
+  const pays = c => c && c !== '—' ? `${flag(c)} ${regions ? regions.of(c) : c}` : 'Inconnu';
+  let me = {}, data = [], filter = 'à traiter', days = 30;
+
+  async function api(a, opts = {}) {
+    const r = await fetch('/api/admin?a=' + a + (opts.q || ''), {
+      method: opts.body ? 'POST' : 'GET', credentials: 'same-origin',
+      headers: opts.body ? { 'Content-Type': 'application/json' } : {}, body: opts.body ? JSON.stringify(opts.body) : undefined
+    });
+    const j = await r.json().catch(() => ({}));
+    if (r.status === 401 && a !== 'login') { show('login'); throw new Error(j.error); }
+    if (!r.ok) throw new Error(j.error || 'Erreur ' + r.status);
+    return j;
+  }
+  function toast(t) { const d = document.createElement('div'); d.className = 'toast'; d.textContent = t; document.body.appendChild(d); setTimeout(() => d.remove(), 2600); }
+  function show(v) { $('#v-login').hidden = v !== 'login'; $('#v-app').hidden = v !== 'app'; }
+
+  // Connexion
+  async function boot() {
+    try {
+      me = await api('me');
+      if (!me.ok) return show('login');
+      show('app'); $('#who').textContent = me.email; go('dash'); loadDem(true);
+    } catch (e) { show('login'); if (e.message) { $('#l-err').hidden = false; $('#l-err').textContent = e.message; } }
+  }
+  $('#f-login').addEventListener('submit', async e => {
+    e.preventDefault();
+    const f = e.target, btn = f.querySelector('button'), err = $('#l-err');
+    btn.disabled = true; err.hidden = true;
+    try { await api('login', { body: Object.fromEntries(new FormData(f)) }); f.password.value = ''; await boot(); }
+    catch (x) { err.hidden = false; err.textContent = x.message; }
+    finally { btn.disabled = false; }
+  });
+  const logout = async () => { await api('logout', { body: {} }).catch(() => {}); show('login'); };
+  $('#b-out').onclick = logout; $('#b-out2').onclick = logout;
+
+  // Navigation
+  function go(v) {
+    $$('[data-view]').forEach(s => s.hidden = s.dataset.view !== v);
+    $$('#nav button, #tabbar button').forEach(b => b.classList.toggle('on', b.dataset.v === v));
+    if (v === 'dash') loadStats(); if (v === 'dem') loadDem(); if (v === 'vis') loadVis(); if (v === 'set') loadSet();
+    scrollTo(0, 0);
+  }
+  $$('#nav button, #tabbar button').forEach(b => b.onclick = () => go(b.dataset.v));
+
+  // Tableau de bord
+  $$('#per button').forEach(b => b.onclick = () => { days = +b.dataset.d; $$('#per button').forEach(x => x.classList.toggle('on', x === b)); loadStats(); });
+  const bars = (el, rows, label = x => esc(x)) => {
+    const max = Math.max(1, ...rows.map(r => r[1]));
+    el.innerHTML = rows.length ? rows.map(([k, n]) => `<div class="bar"><span>${label(k)}</span><em>${n}</em><u><s style="width:${n / max * 100}%"></s></u></div>`).join('') : '<div class="empty">Pas encore de données</div>';
+  };
+  async function loadStats() {
+    const s = await api('stats', { q: '&days=' + days });
+    const t = s.days[s.days.length - 1];
+    $('#k-new').textContent = s.demandes.nouvelles; $('#k-dem').textContent = `${s.demandes.total} demande(s) au total`;
+    $('#k-uni').textContent = s.uniques; $('#k-views').textContent = s.views;
+    $('#k-today').textContent = t.u; $('#k-total').textContent = `${t.v} page(s) vue(s) · ${s.total} depuis le début`;
+    const max = Math.max(1, ...s.days.map(d => d.v));
+    $('#chart').innerHTML = s.days.map(d => `<div class="c" title="${new Date(d.d).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' })} : ${d.v} vue(s), ${d.u} visiteur(s)"><i style="height:${d.v / max * 100}%"></i><i class="u" style="height:${d.u / max * 100}%"></i></div>`).join('');
+    const lab = d => new Date(d).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' });
+    $('#axis').innerHTML = `<span>${lab(s.days[0].d)}</span><span>${lab(s.days[Math.floor(s.days.length / 2)].d)}</span><span>Aujourd'hui</span>`;
+    bars($('#t-pays'), s.pays, pays); bars($('#t-villes'), s.villes); bars($('#t-sources'), s.sources); bars($('#t-appareils'), s.appareils);
+  }
+
+  // Demandes
+  const FILTERS = ['à traiter', 'toutes', ...STATUTS];
+  $('#d-f').innerHTML = FILTERS.map(f => `<button class="chip" data-f="${f}">${f[0].toUpperCase() + f.slice(1)}</button>`).join('');
+  $$('#d-f .chip').forEach(c => c.onclick = () => { filter = c.dataset.f; renderDem(); });
+  $('#d-q').oninput = () => renderDem();
+  $('#b-ref').onclick = () => loadDem();
+  async function loadDem(quiet) {
+    try { data = await api('demandes'); } catch (e) { if (!quiet) toast(e.message); return; }
+    const n = data.filter(d => d.statut === 'nouvelle').length;
+    $$('[data-badge]').forEach(b => { b.hidden = !n; b.textContent = n; });
+    document.title = (n ? `(${n}) ` : '') + 'LogiPro Admin';
+    renderDem();
+  }
+  function renderDem() {
+    $$('#d-f .chip').forEach(c => c.classList.toggle('on', c.dataset.f === filter));
+    const q = $('#d-q').value.trim().toLowerCase();
+    const rows = data.filter(d => filter === 'toutes' || (filter === 'à traiter' ? ['nouvelle', 'en cours'].includes(d.statut) : d.statut === filter))
+      .filter(d => !q || [d.nom, d.societe, d.email, d.tel, d.message].join(' ').toLowerCase().includes(q));
+    $('#d-count').textContent = `${data.length} demande(s) · ${data.filter(d => d.statut === 'nouvelle').length} nouvelle(s)`;
+    $('#d-list').innerHTML = rows.length ? rows.map(d => `
+      <button class="dm" data-id="${d.id}">
+        <span class="av">${esc((d.nom || '?').trim()[0].toUpperCase())}</span>
+        <span style="min-width:0"><b>${esc(d.nom)} · ${esc(d.societe)}</b><span class="sub">${esc(d.email)}${d.modules?.length ? ' · ' + esc(d.modules.join(', ')) : ''}</span></span>
+        <span class="rt"><span class="${cls(d.statut)}">${esc(d.statut)}</span>${fmt(d.t)}</span>
+      </button>`).join('') : '<div class="card empty">Aucune demande ici.</div>';
+    $$('#d-list .dm').forEach(b => b.onclick = () => openDem(b.dataset.id));
+  }
+  setInterval(() => { if (!$('#v-app').hidden) loadDem(true); }, 60000);
+
+  function openDem(id) {
+    const d = data.find(x => x.id === id); if (!d) return;
+    const prenom = (d.nom || '').split(' ')[0];
+    const subj = 'Votre demande de démonstration LogiPro';
+    const tpl = `Bonjour ${prenom},\n\nMerci pour votre intérêt pour LogiPro et pour votre demande de démonstration${d.modules?.length ? ' (' + d.modules.join(', ') + ')' : ''}.\n\nJe vous propose une présentation en ligne de 30 minutes, adaptée à ${d.societe}. Quelles sont vos disponibilités cette semaine ?\n\nBien cordialement,\nL'équipe LogiPro\n+261 34 40 370 64`;
+    const tel = (d.tel || '').replace(/[^\d+]/g, '');
+    const ov = document.createElement('div'); ov.className = 'ov';
+    ov.innerHTML = `<div class="pn" role="dialog" aria-modal="true">
+      <div class="hd"><div><span class="${cls(d.statut)}">${esc(d.statut)}</span><h2 style="margin-top:8px">${esc(d.nom)}</h2><div style="color:var(--ink-3)">${esc(d.societe)} · reçue le ${fmt(d.t)}</div></div><button class="x" aria-label="Fermer">×</button></div>
+      <div class="stack">
+        <div class="card">
+          <dl class="info">
+            <dt>E-mail</dt><dd><a href="mailto:${esc(d.email)}">${esc(d.email)}</a></dd>
+            <dt>Téléphone</dt><dd>${d.tel ? `<a href="tel:${esc(tel)}">${esc(d.tel)}</a>` : '—'}</dd>
+            <dt>Modules</dt><dd>${esc(d.modules?.join(', ') || 'Tous')}</dd>
+            <dt>Lieu</dt><dd>${d.c ? pays(d.c) + (d.ci ? ' · ' + esc(d.ci) : '') : '—'}</dd>
+            <dt>Appareil</dt><dd>${esc([d.dv, d.os].filter(Boolean).join(' · ') || '—')}</dd>
+          </dl>
+          ${d.message ? `<p style="margin:14px 0 0;white-space:pre-wrap;background:var(--bg);border-radius:10px;padding:12px">${esc(d.message)}</p>` : ''}
+          <div class="qa">${d.tel ? `<a class="btn gh sm" href="tel:${esc(tel)}">📞 Appeler</a><a class="btn gh sm" href="https://wa.me/${esc(tel.replace('+', ''))}" target="_blank" rel="noopener">💬 WhatsApp</a>` : ''}</div>
+        </div>
+        <div class="card stack">
+          <h3 style="margin:0">Suivi</h3>
+          <div class="row"><select class="in" id="p-st" style="width:auto">${STATUTS.map(s => `<option ${s === d.statut ? 'selected' : ''}>${s}</option>`).join('')}</select></div>
+          <label class="f">Note interne<textarea class="in" id="p-note" placeholder="Visible par vous seul">${esc(d.note)}</textarea></label>
+          <div class="row"><button class="btn sm" id="p-save">Enregistrer le suivi</button></div>
+        </div>
+        <div class="card stack">
+          <h3 style="margin:0">Répondre par e-mail</h3>
+          <label class="f">Objet<input class="in" id="p-sub" value="${esc(subj)}"></label>
+          <label class="f">Message<textarea class="in" id="p-msg" rows="9">${esc(tpl)}</textarea></label>
+          <div class="row">
+            ${me.mail ? '<button class="btn or" id="p-send">Envoyer la réponse</button>' : ''}
+            <button class="btn ${me.mail ? 'gh' : 'or'}" id="p-gm">Ouvrir dans Gmail</button>
+          </div>
+          ${me.mail ? '' : '<div style="font-size:12.5px;color:var(--ink-3)">« Ouvrir dans Gmail » prépare la réponse dans votre Gmail : il ne reste qu\'à appuyer sur Envoyer. La demande est notée « répondue ».</div>'}
+        </div>
+        <div class="card"><h3>Historique</h3><ul class="hist">${d.hist.slice().reverse().map(h => `<li>${esc(h.a)}<small>${fmt(h.t)}</small>${h.m ? `<pre><b>${esc(h.s)}</b>\n\n${esc(h.m)}</pre>` : ''}</li>`).join('')}</ul></div>
+        <div class="row"><button class="btn rd sm" id="p-del">Supprimer la demande</button></div>
+      </div></div>`;
+    document.body.appendChild(ov);
+    const close = () => { ov.remove(); document.removeEventListener('keydown', onKey); };
+    const onKey = e => { if (e.key === 'Escape') close(); };
+    document.addEventListener('keydown', onKey);
+    ov.addEventListener('click', e => { if (e.target === ov || e.target.closest('.x')) close(); });
+    const refresh = async nd => { Object.assign(d, nd); await loadDem(true); close(); openDem(id); };
+    $('#p-save', ov).onclick = async () => { try { await refresh(await api('update', { body: { id, statut: $('#p-st', ov).value, note: $('#p-note', ov).value } })); toast('Suivi enregistré'); } catch (e) { toast(e.message); } };
+    const send = $('#p-send', ov);
+    if (send) send.onclick = async () => {
+      send.disabled = true;
+      try { await refresh(await api('reply', { body: { id, subject: $('#p-sub', ov).value, message: $('#p-msg', ov).value } })); toast('Réponse envoyée à ' + d.email); }
+      catch (e) { toast(e.message); send.disabled = false; }
+    };
+    $('#p-gm', ov).onclick = async () => {
+      const s = $('#p-sub', ov).value, m = $('#p-msg', ov).value;
+      const mobile = /Android|iPhone|iPad/i.test(navigator.userAgent);
+      const url = mobile ? `mailto:${d.email}?subject=${encodeURIComponent(s)}&body=${encodeURIComponent(m)}`
+        : `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(d.email)}&su=${encodeURIComponent(s)}&body=${encodeURIComponent(m)}`;
+      window.open(url, '_blank');
+      try { await refresh(await api('update', { body: { id, replied: true, subject: s, message: m, statut: ['nouvelle', 'en cours'].includes(d.statut) ? 'répondue' : d.statut } })); } catch (e) { toast(e.message); }
+    };
+    $('#p-del', ov).onclick = async () => { if (!confirm('Supprimer définitivement cette demande ?')) return; await api('delete', { body: { id } }); close(); loadDem(); toast('Demande supprimée'); };
+  }
+
+  // Visiteurs
+  $('#b-vref').onclick = () => loadVis();
+  async function loadVis() {
+    const v = await api('visits', { q: '&n=200' });
+    $('#v-body').innerHTML = v.length ? v.map(e => `<tr><td>${fmt(e.t)}</td><td>${pays(e.c)}${e.ci ? '<br><small>' + esc(e.ci) + '</small>' : ''}</td><td>${esc(e.p)}</td><td>${esc(e.r || 'Accès direct')}</td><td>${esc(e.dv)}<br><small>${esc(e.os)} · ${esc(e.b)}</small></td></tr>`).join('') : '<tr><td colspan="5" class="empty">Aucune visite enregistrée pour le moment.</td></tr>';
+  }
+
+  // Paramètres
+  function renderDevs(r) {
+    $('#max').value = r.max;
+    $('#devs').innerHTML = r.list.map(d => `<div class="dev"><span class="ic"><svg><use href="#i-${d.dv === 'Ordinateur' ? 'pc' : 'ph'}"/></svg></span>
+      <div style="flex:1;min-width:0"><b>${esc(d.name)}${d.current ? '<span class="me">cet appareil</span>' : ''}</b><small>${esc(d.os)} · ${esc(d.b)} · dernière connexion ${fmt(d.last)}${d.c ? ' · ' + pays(d.c) : ''}</small></div>
+      ${d.current ? '' : `<button class="btn rd sm" data-rv="${d.id}">Retirer</button>`}</div>`).join('');
+    $$('[data-rv]').forEach(b => b.onclick = async () => { if (!confirm('Retirer cet appareil ? Il ne pourra plus se connecter.')) return; renderDevs(await api('settings', { body: { revoke: b.dataset.rv } })); toast('Appareil retiré'); });
+  }
+  async function loadSet() {
+    renderDevs(await api('devices', { body: {} }));
+    $('#cfg').innerHTML = `<div>✅ Base de données connectée</div><div>${me.mail ? '✅ Envoi d\'e-mails direct activé (Brevo)' : 'ℹ️ Réponses via Gmail (envoi direct : ajoutez BREVO_API_KEY sur Vercel)'}</div><div>🔒 Connecté en tant que ${esc(me.email)}</div>`;
+  }
+  $('#max').onchange = async e => { renderDevs(await api('settings', { body: { max: e.target.value } })); toast('Limite enregistrée'); };
+  $('#f-pw').addEventListener('submit', async e => {
+    e.preventDefault();
+    try { await api('settings', { body: Object.fromEntries(new FormData(e.target)) }); e.target.reset(); toast('Mot de passe modifié'); }
+    catch (x) { toast(x.message); }
+  });
+
+  // Installation de l'application
+  let prompt;
+  addEventListener('beforeinstallprompt', e => { e.preventDefault(); prompt = e; $('#b-inst').hidden = false; });
+  $('#b-inst').onclick = async () => { if (prompt) { prompt.prompt(); prompt = null; $('#b-inst').hidden = true; } };
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('/admin-sw.js', { scope: '/admin' }).catch(() => {});
+
+  boot();
+})();
+</script>
+</body>
+</html>

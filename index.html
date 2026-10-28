@@ -820,7 +820,7 @@ footer{background:var(--navy-900);color:rgba(255,255,255,.7);padding:72px 0 32px
       <div><h4>Opérations</h4><ul><li><a href="#explorer" data-go="carburant">Gestion Carburant</a></li><li><a href="#explorer" data-go="shipping">Shipping</a></li><li><a href="#explorer" data-go="logistique">Logistique</a></li><li><a href="#explorer" data-go="yard">Gestion de Yard</a></li></ul></div>
       <div><h4>Contact</h4><ul><li><a href="mailto:chilanceratiarson@gmail.com">chilanceratiarson@gmail.com</a></li><li><a href="tel:+261344037064">+261 34 40 370 64</a></li><li><a href="https://wa.me/261344037064" target="_blank" rel="noopener">WhatsApp</a></li><li><a href="#contact">Demander une démo</a></li><li><a href="https://bass-de-donne-nekd.vercel.app" rel="noopener">Se connecter</a></li></ul></div>
     </div>
-    <div class="ft-bot"><span>© <span id="yr">2026</span> LogiPro. Tous droits réservés.</span><span>Conçu à Madagascar 🇲🇬</span></div>
+    <div class="ft-bot"><span>© <span id="yr">2026</span> LogiPro. Tous droits réservés.</span><span>Mesure d'audience anonyme, sans cookie · Conçu à Madagascar 🇲🇬</span></div>
   </div>
 </footer>
 
@@ -936,12 +936,17 @@ footer{background:var(--navy-900);color:rgba(255,255,255,.7);padding:72px 0 32px
       _subject: 'Demande de démo LogiPro — ' + d.get('societe'), _replyto: d.get('email'), _template: 'table', _captcha: 'false'
     };
     btn.disabled = true; note.className = 'form-note'; note.textContent = 'Envoi en cours…';
+    // 1) enregistrement pour l'interface admin, 2) copie par e-mail (FormSubmit) ; l'un des deux suffit
+    const saved = fetch('/api/demande', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ nom: d.get('nom'), societe: d.get('societe'), email: d.get('email'), tel: d.get('tel'), modules: m, message: d.get('message'), _honey: d.get('_honey') })
+    }).then(r => r.ok);
+    const mailed = fetch('https://formsubmit.co/ajax/' + CONTACT_EMAIL, {
+      method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify(payload)
+    }).then(r => r.json()).then(j => String(j.success) !== 'false');
     try {
-      const r = await fetch('https://formsubmit.co/ajax/' + CONTACT_EMAIL, {
-        method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify(payload)
-      });
-      const j = await r.json().catch(() => ({}));
-      if (!r.ok || String(j.success) === 'false') throw new Error(j.message || r.status);
+      const res = await Promise.allSettled([saved, mailed]);
+      if (!res.some(x => x.status === 'fulfilled' && x.value)) throw new Error('send');
       f.reset();
       note.className = 'form-note ok';
       note.textContent = 'Merci ' + payload['Nom'] + ' ! Votre demande a bien été envoyée. Nous vous recontactons très vite.';
@@ -952,6 +957,11 @@ footer{background:var(--navy-900);color:rgba(255,255,255,.7);padding:72px 0 32px
   });
 
   $('#yr').textContent = new Date().getFullYear();
+
+  // Mesure d'audience anonyme (pays, page, source, type d'appareil ; aucune adresse IP conservée)
+  try {
+    if (location.hostname !== 'localhost') navigator.sendBeacon('/api/track', new Blob([JSON.stringify({ p: location.pathname, r: document.referrer })], { type: 'application/json' }));
+  } catch {}
 })();
 </script>
 </body>
