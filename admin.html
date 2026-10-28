@@ -159,6 +159,29 @@ main{padding:28px 32px 100px;max-width:1240px;width:100%}
 .dev .me{font-size:11.5px;font-weight:700;color:var(--ok);background:var(--ok-l);padding:2px 8px;border-radius:999px;margin-left:6px}
 .toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:12px;font-size:14px;z-index:60;box-shadow:0 10px 30px rgba(0,0,0,.25)}
 
+/* Site vitrine : les 7 modules autour de LogiPro */
+.nav .ext{display:flex;align-items:center;gap:12px;color:rgba(255,255,255,.75);padding:11px 12px;border-radius:12px;font-weight:600;text-decoration:none;margin-top:8px;border-top:1px solid rgba(255,255,255,.1)}
+.nav .ext svg{width:20px;height:20px}
+.nav .ext:hover{background:rgba(255,255,255,.08);color:#fff}
+.btn svg{width:15px;height:15px}
+.vit{position:relative;max-width:640px;aspect-ratio:1.18;margin:0 auto}
+.vit svg.ln{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.vit svg.ln line{stroke:#9aa6ba;stroke-width:2.4;stroke-dasharray:7 7}
+.vit svg.ln circle{fill:none;stroke:var(--line);stroke-width:1.5;stroke-dasharray:3 6}
+.vit .ce{position:absolute;left:50%;top:50%;width:28%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle at 50% 35%,#173d85,#061a40);border:3px solid #e9b25c;display:grid;place-items:center;box-shadow:0 12px 30px -10px rgba(6,26,64,.6);text-decoration:none;transition:transform .2s}
+.vit .ce img{width:58%;height:auto}
+.vit .ce:hover{transform:translate(-50%,-50%) scale(1.04)}
+.vit .nd{position:absolute;width:21%;transform:translate(-50%,-50%);background:#fff;border:1px solid #e3e8f1;border-radius:16px;padding:10px 6px 9px;text-align:center;text-decoration:none;box-shadow:0 6px 18px -8px rgba(11,37,87,.25);transition:transform .2s,box-shadow .2s}
+.vit .nd:hover{transform:translate(-50%,-50%) translateY(-3px);box-shadow:0 12px 24px -10px rgba(11,37,87,.35)}
+.vit .nd img{height:46px;width:100%;object-fit:contain;display:block}
+.vit .nd b{display:block;font-family:var(--fh);font-size:14px;color:#0b2557;margin-top:6px}
+@media (max-width:560px){
+  .vit{aspect-ratio:auto;display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+  .vit svg.ln{display:none}
+  .vit .ce,.vit .nd{position:static;transform:none!important;width:auto}
+  .vit .ce{grid-column:1/-1;justify-self:center;width:120px}
+}
+
 /* Téléphone */
 .tabbar{display:none}
 @media (max-width:860px){
@@ -191,7 +214,8 @@ main{padding:28px 32px 100px;max-width:1240px;width:100%}
   <symbol id="i-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 6l-10 7L2 6"/></symbol>
   <symbol id="i-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></symbol>
   <symbol id="i-gear" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 00.3 1.8l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.7 1.7 0 00-1.8-.3 1.7 1.7 0 00-1 1.5V21a2 2 0 11-4 0v-.1a1.7 1.7 0 00-1.1-1.5 1.7 1.7 0 00-1.8.3l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.7 1.7 0 00.3-1.8 1.7 1.7 0 00-1.5-1H3a2 2 0 110-4h.1a1.7 1.7 0 001.5-1.1 1.7 1.7 0 00-.3-1.8l-.1-.1a2 2 0 112.8-2.8l.1.1a1.7 1.7 0 001.8.3H9a1.7 1.7 0 001-1.5V3a2 2 0 114 0v.1a1.7 1.7 0 001 1.5 1.7 1.7 0 001.8-.3l.1-.1a2 2 0 112.8 2.8l-.1.1a1.7 1.7 0 00-.3 1.8V9a1.7 1.7 0 001.5 1H21a2 2 0 110 4h-.1a1.7 1.7 0 00-1.5 1z"/></symbol>
-  <symbol id="i-pc" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></symbol>
+  <symbol id="i-out" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 01-1 1H5a1 1 0 01-1-1V7a1 1 0 011-1h5"/></symbol>
+  <symbol id="i-pc"viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></symbol>
   <symbol id="i-ph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M11 18h2"/></symbol>
 </svg>
 
@@ -227,12 +251,13 @@ main{padding:28px 32px 100px;max-width:1240px;width:100%}
       <button data-v="dem"><svg><use href="#i-mail"/></svg>Demandes<span class="bd" data-badge hidden></span></button>
       <button data-v="vis"><svg><use href="#i-eye"/></svg>Visiteurs</button>
       <button data-v="set"><svg><use href="#i-gear"/></svg>Paramètres</button>
+      <a class="ext" href="/" target="_blank" rel="noopener"><svg><use href="#i-out"/></svg>Site vitrine</a>
     </nav>
     <div class="foot"><span id="who"></span><button id="b-out">Se déconnecter</button></div>
   </aside>
 
   <main>
-    <div class="mtop"><div class="lg"><img src="/assets/img/logipro-icon.png" alt="">LogiPro Admin</div><button class="btn gh sm" id="b-out2">Quitter</button></div>
+    <div class="mtop"><div class="lg"><img src="/assets/img/logipro-icon.png" alt="">LogiPro Admin</div><div style="display:flex;gap:8px"><a class="btn gh sm" href="/" target="_blank" rel="noopener">Site <svg><use href="#i-out"/></svg></a><button class="btn gh sm" id="b-out2">Quitter</button></div></div>
 
     <!-- Tableau de bord -->
     <section data-view="dash">
@@ -243,6 +268,10 @@ main{padding:28px 32px 100px;max-width:1240px;width:100%}
         <div class="card kpi"><small>Visiteurs uniques</small><b id="k-uni">–</b><span id="k-per">sur la période</span></div>
         <div class="card kpi"><small>Pages vues</small><b id="k-views">–</b><span>sur la période</span></div>
         <div class="card kpi"><small>Aujourd'hui</small><b id="k-today">–</b><span id="k-total">–</span></div>
+      </div>
+      <div class="card" style="margin-bottom:16px">
+        <h3>Site vitrine <a class="btn gh sm" href="/" target="_blank" rel="noopener">Ouvrir le site <svg><use href="#i-out"/></svg></a></h3>
+        <div class="vit" id="vit"></div>
       </div>
       <div class="card" style="margin-bottom:16px">
         <h3>Fréquentation <span class="legend"><span><i style="background:var(--blue)"></i>Pages vues</span><span><i style="background:var(--orange)"></i>Visiteurs</span></span></h3>
@@ -369,6 +398,21 @@ main{padding:28px 32px 100px;max-width:1240px;width:100%}
   });
   const logout = async () => { await api('logout', { body: {} }).catch(() => {}); show('login'); };
   $('#b-out').onclick = logout; $('#b-out2').onclick = logout;
+
+  // Site vitrine : chaque logo ouvre son module sur le site public
+  (function () {
+    const mods = [
+      ['compta', 'Comptabilité', 'logicompta-logo.jpg'], ['carburant', 'Carburant', 'carburant-logo.jpg'],
+      ['shipping', 'Shipping', 'shipping-logo.svg'], ['teampro', 'TeamPro', 'teampro-logo.svg'],
+      ['logistique', 'Logistique', 'logistique-logo.svg'], ['peoplepro', 'PeoplePro', 'peoplepro-logo.svg'],
+      ['yard', 'Yard', 'yard-logo.svg']
+    ];
+    const pos = mods.map((m, i) => { const a = -Math.PI / 2 + i * 2 * Math.PI / mods.length; return [50 + 39 * Math.cos(a), 50 + 40 * Math.sin(a)]; });
+    $('#vit').innerHTML =
+      `<svg class="ln" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><circle cx="50" cy="50" r="40" vector-effect="non-scaling-stroke"/>${pos.map(([x, y]) => `<line x1="50" y1="50" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}" vector-effect="non-scaling-stroke"/>`).join('')}</svg>` +
+      `<a class="ce" href="/" target="_blank" rel="noopener" title="Ouvrir le site vitrine"><img src="/assets/img/logipro-icon.png" alt="LogiPro"></a>` +
+      mods.map(([id, nom, logo], i) => `<a class="nd" href="/#module-${id}" target="_blank" rel="noopener" style="left:${pos[i][0].toFixed(1)}%;top:${pos[i][1].toFixed(1)}%" title="Voir ${nom} sur le site"><img src="/assets/logos/${logo}" alt=""><b>${nom}</b></a>`).join('');
+  })();
 
   // Navigation
   function go(v) {

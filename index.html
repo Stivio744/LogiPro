@@ -883,6 +883,12 @@ footer{background:var(--navy-900);color:rgba(255,255,255,.7);padding:72px 0 32px
     e.preventDefault(); selectTab(el.dataset.go);
     $('#explorer').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' });
   }));
+  // Lien direct vers un module : /#module-shipping, /#module-yard…
+  function fromHash() {
+    const m = location.hash.match(/^#module-([a-z]+)$/);
+    if (m && $('#t-' + m[1])) { selectTab(m[1]); setTimeout(() => $('#explorer').scrollIntoView({ behavior: 'instant' }), 60); }
+  }
+  addEventListener('hashchange', fromHash); fromHash();
 
   // Integration hub
   const mods = [
