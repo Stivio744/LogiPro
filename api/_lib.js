@@ -101,6 +101,24 @@ async function session(req) {
   return dev ? { deviceId: data.d, device: JSON.parse(dev) } : null; // appareil retiré = session refusée
 }
 
+// ---------- Prospects : historique par navigateur, rattaché à une personne identifiée ----------
+const vkey = k => /^[a-z0-9]{16,40}$/.test(k || '') ? k : null;
+const HIST_DAYS = 90;
+const historyCmds = (k, ev) => [
+  ['LPUSH', P + 'vh:' + k, JSON.stringify(ev)],
+  ['LTRIM', P + 'vh:' + k, 0, 299],
+  ['EXPIRE', P + 'vh:' + k, HIST_DAYS * 86400]
+];
+// pk = 'd:<id demande>' ou 'l:<jeton du lien>'
+async function linkVisitor(k, pk) {
+  await pipe([
+    ['SET', P + 'vk:' + k, pk, 'EX', 400 * 86400],
+    ['SADD', P + 'pk:' + pk, k],
+    ['LREM', P + 'p:ids', 0, pk],
+    ['LPUSH', P + 'p:ids', pk]
+  ]);
+}
+
 // ---------- E-mail (Brevo, facultatif) ----------
 const mailReady = () => !!process.env.BREVO_API_KEY;
 async function sendMail({ to, toName, subject, text, replyTo }) {
@@ -121,4 +139,4 @@ async function sendMail({ to, toName, subject, text, replyTo }) {
   return true;
 }
 
-module.exports = { P, ADMIN_EMAIL, redis, pipe, send, body, cookies, setCookie, ip, geo, ua, hash, today, clip, verifyPassword, makePassword, adminPass, signSession, session, mailReady, sendMail, dbReady: () => !!(R_URL && R_TOK) };
+module.exports = { vkey, historyCmds, linkVisitor, P, ADMIN_EMAIL, redis, pipe, send, body, cookies, setCookie, ip, geo, ua, hash, today, clip, verifyPassword, makePassword, adminPass, signSession, session, mailReady, sendMail, dbReady: () => !!(R_URL && R_TOK) };

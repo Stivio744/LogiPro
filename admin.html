@@ -182,6 +182,23 @@ main{padding:28px 32px 100px;max-width:1240px;width:100%}
   .vit .ce{grid-column:1/-1;justify-self:center;width:120px}
 }
 
+/* Prospects */
+.hint{font-size:13.5px;color:var(--ink-2);margin-bottom:14px;background:var(--blue-l);border-color:transparent}
+.src{font-size:11.5px;font-weight:700;padding:2px 8px;border-radius:999px;background:var(--line);color:var(--ink-2)}
+.src.d{background:var(--orange-l);color:#b86a00}
+.src.l{background:var(--vio-l);color:var(--vio)}
+.mods{display:flex;gap:4px;flex-wrap:wrap;margin-top:4px}
+.mods span{font-size:11.5px;background:var(--blue-l);color:var(--blue);border-radius:6px;padding:1px 7px;font-weight:600}
+.hot{color:var(--ok);font-weight:700}
+.tl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.tl li{display:grid;grid-template-columns:96px 1fr;gap:10px;padding:8px 0;border-bottom:1px solid var(--line);font-size:13.5px}
+.tl li small{color:var(--ink-3)}
+.tl li.m{color:var(--blue)}
+.tl li.day{display:block;font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-3);padding-top:10px;border:0}
+.urlbox{display:flex;gap:8px}
+.urlbox input{flex:1;min-width:0;font-family:ui-monospace,Consolas,monospace;font-size:13px}
+.who{display:inline-block;margin-top:3px;font-size:12px;font-weight:700;color:var(--vio);background:var(--vio-l);border-radius:6px;padding:1px 7px;cursor:pointer;border:0}
+
 /* Téléphone */
 .tabbar{display:none}
 @media (max-width:860px){
@@ -212,6 +229,7 @@ main{padding:28px 32px 100px;max-width:1240px;width:100%}
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <symbol id="i-dash" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></symbol>
   <symbol id="i-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 6l-10 7L2 6"/></symbol>
+  <symbol id="i-target" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/></symbol>
   <symbol id="i-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></symbol>
   <symbol id="i-gear" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 00.3 1.8l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.7 1.7 0 00-1.8-.3 1.7 1.7 0 00-1 1.5V21a2 2 0 11-4 0v-.1a1.7 1.7 0 00-1.1-1.5 1.7 1.7 0 00-1.8.3l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.7 1.7 0 00.3-1.8 1.7 1.7 0 00-1.5-1H3a2 2 0 110-4h.1a1.7 1.7 0 001.5-1.1 1.7 1.7 0 00-.3-1.8l-.1-.1a2 2 0 112.8-2.8l.1.1a1.7 1.7 0 001.8.3H9a1.7 1.7 0 001-1.5V3a2 2 0 114 0v.1a1.7 1.7 0 001 1.5 1.7 1.7 0 001.8-.3l.1-.1a2 2 0 112.8 2.8l-.1.1a1.7 1.7 0 00-.3 1.8V9a1.7 1.7 0 001.5 1H21a2 2 0 110 4h-.1a1.7 1.7 0 00-1.5 1z"/></symbol>
   <symbol id="i-out" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 01-1 1H5a1 1 0 01-1-1V7a1 1 0 011-1h5"/></symbol>
@@ -249,6 +267,7 @@ main{padding:28px 32px 100px;max-width:1240px;width:100%}
     <nav class="nav" id="nav">
       <button data-v="dash" class="on"><svg><use href="#i-dash"/></svg>Tableau de bord</button>
       <button data-v="dem"><svg><use href="#i-mail"/></svg>Demandes<span class="bd" data-badge hidden></span></button>
+      <button data-v="pro"><svg><use href="#i-target"/></svg>Prospects</button>
       <button data-v="vis"><svg><use href="#i-eye"/></svg>Visiteurs</button>
       <button data-v="set"><svg><use href="#i-gear"/></svg>Paramètres</button>
       <a class="ext" href="/" target="_blank" rel="noopener"><svg><use href="#i-out"/></svg>Site vitrine</a>
@@ -290,6 +309,14 @@ main{padding:28px 32px 100px;max-width:1240px;width:100%}
       <div class="top"><div><h2>Demandes de démo</h2><p id="d-count">–</p></div><button class="btn gh sm" id="b-ref">Actualiser</button></div>
       <div class="tools"><input class="in" id="d-q" type="search" placeholder="Rechercher un nom, une société, un e-mail…"><div class="chips" id="d-f"></div></div>
       <div class="dl" id="d-list"></div>
+    </section>
+
+    <!-- Prospects -->
+    <section data-view="pro" hidden>
+      <div class="top"><div><h2>Prospects</h2><p>Les personnes identifiées et ce qu'elles regardent sur le site</p></div>
+        <div class="row"><button class="btn gh sm" id="b-pref">Actualiser</button><button class="btn or sm" id="b-plink">+ Lien de suivi</button></div></div>
+      <div class="card hint">Un prospect apparaît ici quand il <b>envoie une demande de démo</b>, ou quand il <b>ouvre un lien de suivi</b> que vous lui avez envoyé (WhatsApp, e-mail, Facebook…). Ses visites passées sur le même appareil sont alors retrouvées, ainsi que les suivantes.</div>
+      <div class="dl" id="p-list"></div>
     </section>
 
     <!-- Visiteurs -->
@@ -337,6 +364,7 @@ main{padding:28px 32px 100px;max-width:1240px;width:100%}
   <nav class="tabbar" id="tabbar">
     <button data-v="dash" class="on"><svg><use href="#i-dash"/></svg>Tableau</button>
     <button data-v="dem"><svg><use href="#i-mail"/></svg>Demandes<span class="bd" data-badge hidden></span></button>
+    <button data-v="pro"><svg><use href="#i-target"/></svg>Prospects</button>
     <button data-v="vis"><svg><use href="#i-eye"/></svg>Visiteurs</button>
     <button data-v="set"><svg><use href="#i-gear"/></svg>Réglages</button>
   </nav>
@@ -418,7 +446,7 @@ main{padding:28px 32px 100px;max-width:1240px;width:100%}
   function go(v) {
     $$('[data-view]').forEach(s => s.hidden = s.dataset.view !== v);
     $$('#nav button, #tabbar button').forEach(b => b.classList.toggle('on', b.dataset.v === v));
-    if (v === 'dash') loadStats(); if (v === 'dem') loadDem(); if (v === 'vis') loadVis(); if (v === 'set') loadSet();
+    if (v === 'dash') loadStats(); if (v === 'dem') loadDem(); if (v === 'vis') loadVis(); if (v === 'pro') loadPro(); if (v === 'set') loadSet();
     scrollTo(0, 0);
   }
   $$('#nav button, #tabbar button').forEach(b => b.onclick = () => go(b.dataset.v));
@@ -508,6 +536,7 @@ main{padding:28px 32px 100px;max-width:1240px;width:100%}
           </div>
           ${me.mail ? '' : '<div style="font-size:12.5px;color:var(--ink-3)">« Ouvrir dans Gmail » prépare la réponse dans votre Gmail : il ne reste qu\'à appuyer sur Envoyer. La demande est notée « répondue ».</div>'}
         </div>
+        <div class="card" id="p-act"><h3>Activité sur le site</h3><div class="empty" style="padding:6px">Chargement…</div></div>
         <div class="card"><h3>Historique</h3><ul class="hist">${d.hist.slice().reverse().map(h => `<li>${esc(h.a)}<small>${fmt(h.t)}</small>${h.m ? `<pre><b>${esc(h.s)}</b>\n\n${esc(h.m)}</pre>` : ''}</li>`).join('')}</ul></div>
         <div class="row"><button class="btn rd sm" id="p-del">Supprimer la demande</button></div>
       </div></div>`;
@@ -532,14 +561,118 @@ main{padding:28px 32px 100px;max-width:1240px;width:100%}
       window.open(url, '_blank');
       try { await refresh(await api('update', { body: { id, replied: true, subject: s, message: m, statut: ['nouvelle', 'en cours'].includes(d.statut) ? 'répondue' : d.statut } })); } catch (e) { toast(e.message); }
     };
+    api('prospect', { q: '&id=' + encodeURIComponent('d:' + id) }).then(p => {
+      $('#p-act', ov).innerHTML = `<h3>Activité sur le site <button class="btn gh sm" id="p-open">Détail</button></h3>${actSummary(p)}`;
+      $('#p-open', ov).onclick = () => { close(); openPro('d:' + id); };
+    }).catch(() => { $('#p-act', ov).innerHTML = '<h3>Activité sur le site</h3><div class="empty" style="padding:6px">Demande envoyée avant la mise en place du suivi : pas d\'historique.</div>'; });
     $('#p-del', ov).onclick = async () => { if (!confirm('Supprimer définitivement cette demande ?')) return; await api('delete', { body: { id } }); close(); loadDem(); toast('Demande supprimée'); };
   }
+
+  // Prospects
+  const MODS = { compta: 'Comptabilité', carburant: 'Carburant', shipping: 'Shipping', teampro: 'TeamPro', logistique: 'Logistique', peoplepro: 'PeoplePro', yard: 'Yard' };
+  const SITE = location.origin;
+  const ago = t => {
+    if (!t) return 'jamais';
+    const m = Math.round((Date.now() - t) / 6e4);
+    return m < 2 ? 'à l’instant' : m < 60 ? `il y a ${m} min` : m < 1440 ? `il y a ${Math.round(m / 60)} h` : m < 2880 ? 'hier' : `il y a ${Math.round(m / 1440)} j`;
+  };
+  const modChips = list => list?.length ? `<span class="mods">${list.map(([m, n]) => `<span>${esc(MODS[m] || m)}${n > 1 ? ' ×' + n : ''}</span>`).join('')}</span>` : '';
+  const linkUrl = p => `${SITE}/?p=${p.tok}${p.m ? '#module-' + p.m : ''}`;
+  function actSummary(p) {
+    if (!p.pages) return '<div class="empty" style="padding:6px">Aucune visite enregistrée pour l’instant.</div>';
+    return `<dl class="info"><dt>Visites</dt><dd>${p.visites} visite(s) · ${p.pages} page(s)</dd><dt>Dernière</dt><dd class="${Date.now() - p.last < 864e5 ? 'hot' : ''}">${fmt(p.last)} (${ago(p.last)})</dd><dt>Première</dt><dd>${fmt(p.first)}</dd><dt>Intérêts</dt><dd>${modChips(p.modules) || '—'}</dd></dl>`;
+  }
+  let pros = [];
+  $('#b-pref').onclick = () => loadPro();
+  async function loadPro() {
+    try { pros = await api('prospects'); } catch (e) { toast(e.message); return; }
+    $('#p-list').innerHTML = pros.length ? pros.map(p => `
+      <button class="dm" data-pk="${esc(p.id)}">
+        <span class="av">${esc((p.nom || '?').trim()[0].toUpperCase())}</span>
+        <span style="min-width:0"><b>${esc(p.nom)}${p.societe ? ' · ' + esc(p.societe) : ''}</b>
+          <span class="sub">${p.pages ? `${p.visites} visite(s) · ${p.pages} page(s)` : (p.src === 'lien' ? 'Lien pas encore ouvert' : 'Aucune visite')}</span>${modChips(p.modules)}</span>
+        <span class="rt"><span class="src ${p.src === 'demande' ? 'd' : 'l'}">${p.src === 'demande' ? 'Demande' : 'Lien perso'}</span><span class="${p.last && Date.now() - p.last < 864e5 ? 'hot' : ''}">${p.last ? ago(p.last) : fmt(p.t)}</span></span>
+      </button>`).join('') : '<div class="card empty">Pas encore de prospect. Créez un lien de suivi et envoyez-le à un contact.</div>';
+    $$('#p-list .dm').forEach(b => b.onclick = () => openPro(b.dataset.pk));
+  }
+  function panel(html) {
+    const ov = document.createElement('div'); ov.className = 'ov';
+    ov.innerHTML = `<div class="pn" role="dialog" aria-modal="true">${html}</div>`;
+    document.body.appendChild(ov);
+    const close = () => { ov.remove(); document.removeEventListener('keydown', onKey); };
+    const onKey = e => { if (e.key === 'Escape') close(); };
+    document.addEventListener('keydown', onKey);
+    ov.addEventListener('click', e => { if (e.target === ov || e.target.closest('.x')) close(); });
+    return [ov, close];
+  }
+  function shareBlock(p) {
+    const url = linkUrl(p), prenom = (p.nom || '').split(' ')[0];
+    const msg = `Bonjour ${prenom},\n\nVoici la présentation de LogiPro${p.m ? ', module ' + MODS[p.m] : ''} : ${url}\n\nJe reste à votre disposition pour une démonstration.\n\nL'équipe LogiPro\n+261 34 40 370 64`;
+    const tel = (p.tel || '').replace(/[^\d]/g, '');
+    return `<div class="card stack"><h3 style="margin:0">Lien de suivi</h3>
+      <div class="urlbox"><input class="in" readonly value="${esc(url)}"><button class="btn sm" data-copy>Copier</button></div>
+      <div class="row"><a class="btn gh sm" target="_blank" rel="noopener" href="https://wa.me/${esc(tel)}?text=${encodeURIComponent(msg)}">💬 WhatsApp</a>
+        <a class="btn gh sm" target="_blank" rel="noopener" href="https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(p.email || '')}&su=${encodeURIComponent('Présentation LogiPro')}&body=${encodeURIComponent(msg)}">✉️ Gmail</a></div>
+      <div style="font-size:12.5px;color:var(--ink-3)">Envoyez ce lien à ${esc(prenom || 'ce contact')} seulement : chaque ouverture est attribuée à cette personne.</div></div>`;
+  }
+  function wireShare(ov) {
+    const b = $('[data-copy]', ov); if (!b) return;
+    b.onclick = async () => { const i = $('.urlbox input', ov); try { await navigator.clipboard.writeText(i.value); } catch { i.select(); document.execCommand('copy'); } toast('Lien copié'); };
+  }
+  async function openPro(pk) {
+    let p; try { p = await api('prospect', { q: '&id=' + encodeURIComponent(pk) }); } catch (e) { toast(e.message); return; }
+    let day = '';
+    const tl = p.hist.map(e => {
+      const d = new Date(e.t).toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' });
+      const head = d !== day ? `<li class="day">${esc(d)}</li>` : ''; day = d;
+      const h = new Date(e.t).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+      return head + (e.e === 'm'
+        ? `<li class="m"><small>${h}</small><span>Regarde le module <b>${esc(MODS[e.m] || e.m)}</b></span></li>`
+        : `<li><small>${h}</small><span>Ouvre ${esc(e.p === '/' ? 'le site' : e.p)}${e.r ? ' depuis <b>' + esc(e.r) + '</b>' : ''}<br><small>${pays(e.c)}${e.ci ? ' · ' + esc(e.ci) : ''} · ${esc(e.dv || '')} ${esc(e.os || '')}</small></span></li>`);
+    }).join('');
+    const [ov, close] = panel(`
+      <div class="hd"><div><span class="src ${p.src === 'demande' ? 'd' : 'l'}">${p.src === 'demande' ? 'Demande de démo' : 'Lien perso'}</span><h2 style="margin-top:8px">${esc(p.nom)}</h2><div style="color:var(--ink-3)">${esc(p.societe || '')}</div></div><button class="x" aria-label="Fermer">×</button></div>
+      <div class="stack">
+        <div class="card">${actSummary(p)}
+          <dl class="info" style="margin-top:12px">${p.email ? `<dt>E-mail</dt><dd><a href="mailto:${esc(p.email)}">${esc(p.email)}</a></dd>` : ''}${p.tel ? `<dt>Téléphone</dt><dd><a href="tel:${esc(p.tel)}">${esc(p.tel)}</a></dd>` : ''}${p.note ? `<dt>Note</dt><dd>${esc(p.note)}</dd>` : ''}</dl>
+          ${p.src === 'demande' ? '<div class="qa"><button class="btn sm" id="p-todem">Ouvrir la demande</button></div>' : ''}</div>
+        ${p.src === 'lien' ? shareBlock(p) : ''}
+        <div class="card"><h3>Parcours sur le site</h3>${tl ? `<ul class="tl">${tl}</ul>` : '<div class="empty">Aucune visite pour l’instant.</div>'}</div>
+        ${p.src === 'lien' ? '<div class="row"><button class="btn rd sm" id="p-pdel">Supprimer ce prospect</button></div>' : ''}
+      </div>`);
+    wireShare(ov);
+    const td = $('#p-todem', ov); if (td) td.onclick = async () => { close(); go('dem'); await loadDem(true); openDem(pk.slice(2)); };
+    const del = $('#p-pdel', ov);
+    if (del) del.onclick = async () => { if (!confirm('Supprimer ce prospect et son historique ? Le lien ne sera plus suivi.')) return; await api('pdel', { body: { id: pk } }); close(); loadPro(); toast('Prospect supprimé'); };
+  }
+  $('#b-plink').onclick = () => {
+    const [ov, close] = panel(`
+      <div class="hd"><div><h2>Nouveau lien de suivi</h2><div style="color:var(--ink-3)">Pour un contact précis : vous verrez quand il ouvre le lien et ce qu'il regarde.</div></div><button class="x" aria-label="Fermer">×</button></div>
+      <form class="card stack" id="f-pl">
+        <label class="f">Nom du contact *<input class="in" name="nom" required maxlength="100" placeholder="Ex. : Jean Rakoto"></label>
+        <label class="f">Société<input class="in" name="societe" maxlength="120"></label>
+        <label class="f">E-mail<input class="in" name="email" type="email" maxlength="160"></label>
+        <label class="f">Téléphone / WhatsApp<input class="in" name="tel" maxlength="40" placeholder="+261 …"></label>
+        <label class="f">Ouvrir directement sur le module<select class="in" name="m"><option value="">Accueil du site</option>${Object.entries(MODS).map(([k, v]) => `<option value="${k}">${v}</option>`).join('')}</select></label>
+        <label class="f">Note interne<textarea class="in" name="note" rows="2" placeholder="Ex. : rencontré au salon, intéressé par le carburant"></textarea></label>
+        <div class="row"><button class="btn or" type="submit">Créer le lien</button></div>
+      </form><div id="pl-out"></div>`);
+    $('#f-pl', ov).onsubmit = async e => {
+      e.preventDefault();
+      const btn = e.target.querySelector('button'); btn.disabled = true;
+      try {
+        const p = await api('plink', { body: Object.fromEntries(new FormData(e.target)) });
+        e.target.remove(); $('#pl-out', ov).innerHTML = shareBlock(p); wireShare(ov); loadPro(); toast('Lien créé');
+      } catch (x) { toast(x.message); btn.disabled = false; }
+    };
+  };
 
   // Visiteurs
   $('#b-vref').onclick = () => loadVis();
   async function loadVis() {
     const v = await api('visits', { q: '&n=200' });
-    $('#v-body').innerHTML = v.length ? v.map(e => `<tr><td>${fmt(e.t)}</td><td>${pays(e.c)}${e.ci ? '<br><small>' + esc(e.ci) + '</small>' : ''}</td><td>${esc(e.p)}</td><td>${esc(e.r || 'Accès direct')}</td><td>${esc(e.dv)}<br><small>${esc(e.os)} · ${esc(e.b)}</small></td></tr>`).join('') : '<tr><td colspan="5" class="empty">Aucune visite enregistrée pour le moment.</td></tr>';
+    $('#v-body').innerHTML = v.length ? v.map(e => `<tr><td>${fmt(e.t)}</td><td>${pays(e.c)}${e.ci ? '<br><small>' + esc(e.ci) + '</small>' : ''}${e.who ? `<br><button class="who" data-pk="${esc(e.who.id)}">${esc(e.who.nom)}${e.who.societe ? ' · ' + esc(e.who.societe) : ''}</button>` : ''}</td><td>${esc(e.p)}</td><td>${esc(e.r || 'Accès direct')}</td><td>${esc(e.dv)}<br><small>${esc(e.os)} · ${esc(e.b)}</small></td></tr>`).join('') : '<tr><td colspan="5" class="empty">Aucune visite enregistrée pour le moment.</td></tr>';
+    $$('#v-body .who').forEach(b => b.onclick = () => openPro(b.dataset.pk));
   }
 
   // Paramètres

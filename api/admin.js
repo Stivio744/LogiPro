@@ -121,7 +121,83 @@ async function reply(req, res) {
 async function remove(req, res) {
   const { id } = await L.body(req);
   await L.pipe([['DEL', L.P + 'd:' + id], ['LREM', L.P + 'd:ids', 0, id]]);
+  await forgetProspect('d:' + id);
   L.send(res, 200, { ok: true });
+}
+
+// ---------- Prospects ----------
+// Fiche d'un prospect : sa demande de démo, ou le contact pour qui un lien de suivi a été créé
+async function prospectCards(pks) {
+  if (!pks.length) return [];
+  const raw = await L.redis('MGET', ...pks.map(pk => L.P + (pk[0] === 'd' ? 'd:' : 'p:l:') + pk.slice(2)));
+  return pks.map((pk, i) => {
+    if (!raw[i]) return null;
+    const r = JSON.parse(raw[i]);
+    return pk[0] === 'd'
+      ? { id: pk, src: 'demande', nom: r.nom, societe: r.societe, email: r.email, tel: r.tel, t: r.t, statut: r.statut }
+      : { id: pk, src: 'lien', nom: r.nom, societe: r.societe, email: r.email, tel: r.tel, t: r.t, note: r.note, tok: r.tok, m: r.m };
+  });
+}
+// Historique fusionné de tous les navigateurs rattachés au prospect, du plus récent au plus ancien
+async function prospectHistory(pk) {
+  const keys = await L.redis('SMEMBERS', L.P + 'pk:' + pk) || [];
+  const lists = await L.pipe(keys.map(k => ['LRANGE', L.P + 'vh:' + k, 0, 299]));
+  return lists.flat().filter(Boolean).map(x => JSON.parse(x)).sort((a, b) => b.t - a.t);
+}
+function summarize(h) {
+  const pages = h.filter(e => e.e === 'p');
+  const mods = {};
+  h.filter(e => e.e === 'm').forEach(e => { mods[e.m] = (mods[e.m] || 0) + 1; });
+  // une « visite » = des pages vues à moins de 30 min d'intervalle
+  let visites = 0, prev = Infinity;
+  pages.forEach(e => { if (prev - e.t > 30 * 6e4) visites++; prev = e.t; });
+  return { visites, pages: pages.length, last: h[0]?.t || null, first: h[h.length - 1]?.t || null, modules: Object.entries(mods).sort((a, b) => b[1] - a[1]) };
+}
+async function prospects(req, res) {
+  const pks = await L.redis('LRANGE', L.P + 'p:ids', 0, 499) || [];
+  const cards = (await prospectCards(pks)).filter(Boolean);
+  const out = [];
+  for (const c of cards) out.push({ ...c, ...summarize(await prospectHistory(c.id)) });
+  out.sort((a, b) => (b.last || b.t) - (a.last || a.t));
+  L.send(res, 200, out);
+}
+async function prospect(req, res) {
+  const pk = String(req.query.id || '');
+  const [card] = await prospectCards([pk]);
+  if (!card) return L.send(res, 404, { error: 'Prospect introuvable' });
+  const h = await prospectHistory(pk);
+  L.send(res, 200, { ...card, ...summarize(h), hist: h.slice(0, 200) });
+}
+async function plink(req, res) {
+  const b = await L.body(req);
+  const nom = L.clip(b.nom, 100);
+  if (!nom) return L.send(res, 400, { error: 'Nom obligatoire' });
+  const tok = crypto.randomBytes(6).toString('base64url').toLowerCase().replace(/[^a-z0-9]/g, '').slice(0, 8).padEnd(8, '0');
+  const m = /^[a-z]{3,12}$/.test(b.m || '') ? b.m : '';
+  const rec = { tok, nom, societe: L.clip(b.societe, 120), email: L.clip(b.email, 160).toLowerCase(), tel: L.clip(b.tel, 40), note: L.clip(b.note, 1000), m, t: Date.now() };
+  await L.pipe([['SET', L.P + 'p:l:' + tok, JSON.stringify(rec)], ['LPUSH', L.P + 'p:ids', 'l:' + tok]]);
+  L.send(res, 200, rec);
+}
+async function forgetProspect(pk) {
+  const keys = await L.redis('SMEMBERS', L.P + 'pk:' + pk) || [];
+  await L.pipe([['DEL', L.P + 'pk:' + pk], ['LREM', L.P + 'p:ids', 0, pk], ...keys.map(k => ['DEL', L.P + 'vk:' + k])]);
+}
+async function pdel(req, res) {
+  const { id } = await L.body(req);
+  if (!/^l:[a-z0-9]{6,16}$/.test(id || '')) return L.send(res, 400, { error: 'Seuls les liens de suivi se suppriment ici' });
+  await forgetProspect(id);
+  await L.redis('DEL', L.P + 'p:l:' + id.slice(2));
+  L.send(res, 200, { ok: true });
+}
+// Nom du prospect pour chaque visite de la liste « Visiteurs », quand il est connu
+async function nameVisits(list) {
+  const ks = [...new Set(list.map(e => e.k).filter(Boolean))];
+  if (!ks.length) return list;
+  const pks = await L.redis('MGET', ...ks.map(k => L.P + 'vk:' + k));
+  const cards = await prospectCards([...new Set(pks.filter(Boolean))]);
+  const byPk = Object.fromEntries(cards.filter(Boolean).map(c => [c.id, c]));
+  const byK = Object.fromEntries(ks.map((k, i) => [k, byPk[pks[i]]]));
+  return list.map(e => { const c = e.k && byK[e.k]; return c ? { ...e, who: { id: c.id, nom: c.nom, societe: c.societe } } : e; });
 }
 
 async function devices(req, res, s) {
@@ -161,13 +237,17 @@ module.exports = async (req, res) => {
     if (a === 'stats') return await stats(req, res);
     if (a === 'visits') {
       const raw = await L.redis('LRANGE', L.P + 'v:log', 0, Math.min(1000, +req.query.n || 200) - 1);
-      return L.send(res, 200, raw.map(x => JSON.parse(x)));
+      return L.send(res, 200, await nameVisits(raw.map(x => JSON.parse(x))));
     }
+    if (a === 'prospects') return await prospects(req, res);
+    if (a === 'prospect') return await prospect(req, res);
     if (a === 'demandes') return L.send(res, 200, await demandes(await L.redis('LRANGE', L.P + 'd:ids', 0, -1)));
     if (req.method !== 'POST') return L.send(res, 405, { error: 'POST attendu' });
     if (a === 'update') return await update(req, res);
     if (a === 'reply') return await reply(req, res);
     if (a === 'delete') return await remove(req, res);
+    if (a === 'plink') return await plink(req, res);
+    if (a === 'pdel') return await pdel(req, res);
     if (a === 'devices') return await devices(req, res, s);
     if (a === 'settings') return await settings(req, res, s);
     L.send(res, 404, { error: 'Action inconnue' });

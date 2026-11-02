@@ -21,6 +21,8 @@ module.exports = async (req, res) => {
     const id = Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
     const rec = { id, t: Date.now(), ...d, statut: 'nouvelle', note: '', c: g.c, ci: g.ci, dv: u.dv, os: u.os, hist: [{ t: Date.now(), a: 'Demande reçue' }] };
     await L.pipe([['SET', L.P + 'd:' + id, JSON.stringify(rec)], ['LPUSH', L.P + 'd:ids', id]]);
+    const k = L.vkey(b.k);
+    if (k) await L.linkVisitor(k, 'd:' + id); // ses visites passées et futures apparaissent dans Prospects
 
     if (L.mailReady()) {
       const txt = `Nouvelle demande de démo LogiPro\n\nNom : ${d.nom}\nSociété : ${d.societe}\nE-mail : ${d.email}\nTéléphone : ${d.tel || '-'}\nModules : ${d.modules.join(', ') || 'Tous'}\n\n${d.message || ''}\n\nTraitez-la dans votre interface admin : https://${req.headers.host}/admin`;
