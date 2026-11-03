@@ -409,7 +409,7 @@ main{padding:28px 32px 100px;max-width:1240px;width:100%}
 <script>
 (() => {
   const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
-  const PROJ = { demo: 'Démo LogiPro', web: 'Site web sur mesure', logiciel: 'Logiciel sur mesure', mobile: 'Application mobile / web' };
+  const PROJ = { demo: 'Démo LogiPro', web: 'Site web sur mesure', logiciel: 'Logiciel sur mesure', mobile: 'Application mobile / web', rappel: 'Demande de rappel' };
   const STATUTS = ['nouvelle', 'en cours', 'répondue', 'démo planifiée', 'client', 'archivée'];
   const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const cls = s => 'st st-' + String(s).replace(/ /g, '-');
@@ -555,7 +555,7 @@ main{padding:28px 32px 100px;max-width:1240px;width:100%}
     $('#d-list').innerHTML = rows.length ? rows.map(d => `
       <button class="dm" data-id="${d.id}">
         <span class="av">${esc((d.nom || '?').trim()[0].toUpperCase())}</span>
-        <span style="min-width:0"><b>${esc(d.nom)} · ${esc(d.societe)}</b><span class="sub">${esc(d.email)}${d.modules?.length ? ' · ' + esc(d.modules.join(', ')) : ''}</span>${d.projet && d.projet !== 'demo' ? `<span class="pj">${esc(PROJ[d.projet])}</span>` : ''}</span>
+        <span style="min-width:0"><b>${esc(d.nom)}${d.societe ? ' · ' + esc(d.societe) : ''}</b><span class="sub">${esc(d.email || d.tel || '')}${d.modules?.length ? ' · ' + esc(d.modules.join(', ')) : ''}</span>${d.projet && d.projet !== 'demo' ? `<span class="pj">${esc(PROJ[d.projet])}</span>` : ''}</span>
         <span class="rt"><span class="${cls(d.statut)}">${esc(d.statut)}</span>${fmt(d.t)}</span>
       </button>`).join('') : '<div class="card empty">Aucune demande ici.</div>';
     $$('#d-list .dm').forEach(b => b.onclick = () => openDem(b.dataset.id));
@@ -574,7 +574,7 @@ main{padding:28px 32px 100px;max-width:1240px;width:100%}
       <div class="stack">
         <div class="card">
           <dl class="info">
-            <dt>E-mail</dt><dd><a href="mailto:${esc(d.email)}">${esc(d.email)}</a></dd>
+            <dt>E-mail</dt><dd>${d.email ? `<a href="mailto:${esc(d.email)}">${esc(d.email)}</a>` : '—'}</dd>
             <dt>Téléphone</dt><dd>${d.tel ? `<a href="tel:${esc(tel)}">${esc(d.tel)}</a>` : '—'}</dd>
             <dt>Projet</dt><dd>${esc(PROJ[d.projet || 'demo'])}</dd>
             ${(d.projet || 'demo') === 'demo' ? `<dt>Modules</dt><dd>${esc(d.modules?.join(', ') || 'Tous')}</dd>` : ''}

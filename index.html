@@ -341,6 +341,29 @@ form.demo .btn[disabled]{opacity:.7;cursor:wait;transform:none}
 .seg-p input:focus-visible+span{outline:3px solid var(--orange-400)}
 @media (max-width:560px){.seg-p{grid-template-columns:1fr 1fr}}
 
+/* Invitation : un conseiller vous rappelle */
+.invite{position:fixed;right:20px;bottom:20px;z-index:80;width:340px;max-width:calc(100vw - 32px);background:#fff;border:1px solid var(--line);border-radius:20px;box-shadow:0 30px 60px -20px rgba(6,26,64,.45);padding:18px 18px 14px;animation:invIn .35s cubic-bezier(.2,.8,.2,1)}
+@keyframes invIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+.inv-x{position:absolute;right:10px;top:8px;border:0;background:none;font-size:22px;line-height:1;color:var(--ink-3);cursor:pointer;padding:4px 8px;border-radius:8px}
+.inv-x:hover{background:var(--bg-soft)}
+.inv-hd{display:flex;gap:12px;align-items:center;margin-bottom:10px;padding-right:22px}
+.inv-av{width:44px;height:44px;border-radius:50%;background:var(--navy-800);display:grid;place-items:center;flex:none;box-shadow:0 0 0 3px #fff,0 0 0 5px var(--orange-400)}
+.inv-av img{width:30px;height:30px}
+.inv-hd b{display:block;font-family:var(--font-head);font-size:15px;line-height:1.25}
+.inv-hd small{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ink-3);margin-top:2px}
+.inv-hd small i{width:8px;height:8px;border-radius:50%;background:#1fbf6b;box-shadow:0 0 0 3px rgba(31,191,107,.2)}
+.invite p{font-size:13.5px;color:var(--ink-2);margin:0 0 12px}
+#inv-f{display:flex;flex-direction:column;gap:8px}
+#inv-f input:not(.hp){font:inherit;font-size:14px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--bg-soft);color:var(--ink)}
+#inv-f input:focus{outline:2px solid var(--blue-400);background:#fff}
+#inv-f .btn{justify-content:center;padding:11px 18px;margin-top:2px}
+.inv-wa{text-align:center;font-size:13px;color:#128c4a;font-weight:600;text-decoration:none;padding:4px}
+.inv-wa:hover{text-decoration:underline}
+.inv-ok{background:#e3f6ea;color:#1a7a43;border-radius:10px;padding:12px;font-weight:600;font-size:14px;text-align:center;margin-bottom:8px}
+.inv-legal{display:block;font-size:11px;color:var(--ink-3);margin-top:8px;line-height:1.4}
+.inv-legal a{color:inherit}
+@media (max-width:560px){.invite{right:16px;left:16px;bottom:16px;width:auto}}
+
 /* Footer */
 footer{background:var(--navy-900);color:rgba(255,255,255,.7);padding:72px 0 32px;margin-top:110px}
 .ft{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:40px}
@@ -953,6 +976,24 @@ form.demo .form-legal{grid-column:1/-1;font-size:12px;line-height:1.5;color:var(
   </div>
 </footer>
 
+
+<!-- ===== Invitation : un conseiller vous rappelle ===== -->
+<aside class="invite" id="invite" hidden aria-labelledby="inv-t">
+  <button class="inv-x" type="button" aria-label="Fermer">×</button>
+  <div class="inv-hd"><span class="inv-av"><img src="/assets/img/logipro-icon.png" alt=""></span><div><b id="inv-t">Un conseiller LogiPro peut vous aider</b><small><i></i>Réponse rapide, du lundi au samedi</small></div></div>
+  <p id="inv-p">Vous regardez nos solutions ? Laissez votre nom et votre numéro : nous vous rappelons pour répondre à vos questions, sans engagement.</p>
+  <form id="inv-f" novalidate>
+    <input name="nom" placeholder="Votre nom" autocomplete="name" required maxlength="100">
+    <input name="tel" placeholder="Téléphone ou WhatsApp" autocomplete="tel" inputmode="tel" maxlength="40">
+    <input name="societe" placeholder="Société (facultatif)" autocomplete="organization" maxlength="120">
+    <input class="hp" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true">
+    <button class="btn btn-primary" type="submit">Être rappelé</button>
+    <a class="inv-wa" href="https://wa.me/261344037064?text=Bonjour%2C%20je%20souhaite%20des%20informations%20sur%20LogiPro." target="_blank" rel="noopener">ou écrire sur WhatsApp</a>
+  </form>
+  <div class="inv-ok" id="inv-ok" hidden>Merci ! Nous vous rappelons très vite.</div>
+  <small class="inv-legal">Vos coordonnées servent uniquement à vous recontacter et sont associées à vos visites sur ce site. <a href="#confidentialite">Confidentialité</a></small>
+</aside>
+
 <script>
 (() => {
   const CONTACT_EMAIL = 'chilanceratiarson@gmail.com';
@@ -1096,6 +1137,7 @@ form.demo .form-legal{grid-column:1/-1;font-size:12px;line-height:1.5;color:var(
     try {
       const res = await Promise.allSettled([saved, mailed]);
       if (!res.some(x => x.status === 'fulfilled' && x.value)) throw new Error('send');
+      try { localStorage.setItem('lp_who', '1'); } catch {}
       f.reset();
       note.className = 'form-note ok';
       note.textContent = 'Merci ' + payload['Nom'] + ' ! Votre demande a bien été envoyée. Nous vous recontactons très vite.';
@@ -1131,6 +1173,45 @@ form.demo .form-legal{grid-column:1/-1;font-size:12px;line-height:1.5;color:var(
     if (id === trackModule.last) return;
     trackModule.last = id; beacon({ e: 'm', m: id });
   }
+  // Invitation à se présenter : visiteur qui revient ou qui regarde plusieurs modules
+  const INV = { seen: 'lp_inv', who: 'lp_who', n: 'lp_n' };
+  const store = { get: k => { try { return localStorage.getItem(k); } catch { return null; } }, set: (k, v) => { try { localStorage.setItem(k, v); } catch {} } };
+  const visits = +(store.get(INV.n) || 0) + 1; store.set(INV.n, visits);
+  let modsSeen = 0, invTimer;
+  function canInvite() {
+    if (store.get(INV.who)) return false;                                  // déjà présenté
+    if (Date.now() - +(store.get(INV.seen) || 0) < 7 * 864e5) return false; // refusé il y a moins de 7 jours
+    return !$('#invite').hidden ? false : true;
+  }
+  function invite(why) {
+    if (!canInvite() || location.hash === '#contact') return;
+    if (why === 'module') $('#inv-p').textContent = 'Ce module vous intéresse ? Laissez votre nom et votre numéro : un conseiller vous le présente en quelques minutes, sans engagement.';
+    $('#invite').hidden = false;
+  }
+  const closeInvite = () => { $('#invite').hidden = true; store.set(INV.seen, Date.now()); };
+  $('#invite .inv-x').onclick = closeInvite;
+  if (visits >= 2) invTimer = setTimeout(() => invite('retour'), 15000);
+  else invTimer = setTimeout(() => invite('long'), 75000);
+  const _trackModule = trackModule;
+  trackModule = id => { _trackModule(id); if (++modsSeen >= 2) { clearTimeout(invTimer); setTimeout(() => invite('module'), 4000); } };
+  $('#inv-f').addEventListener('submit', async e => {
+    e.preventDefault();
+    const f = e.target, d = new FormData(f), btn = f.querySelector('button');
+    if (d.get('_honey')) return;
+    const nom = (d.get('nom') || '').trim(), tel = (d.get('tel') || '').trim();
+    if (!nom || tel.replace(/\D/g, '').length < 7) { (nom ? f.tel : f.nom).focus(); f.tel.placeholder = 'Téléphone ou WhatsApp (obligatoire)'; return; }
+    btn.disabled = true; btn.textContent = 'Envoi…';
+    const body = { nom, tel, societe: d.get('societe') || '', email: '', projet: 'rappel', message: 'Demande de rappel depuis le site', k: visitorKey() };
+    const saved = fetch('/api/demande', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }).then(r => r.ok);
+    const mailed = fetch('https://formsubmit.co/ajax/' + CONTACT_EMAIL, { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify({ 'Nom': nom, 'Téléphone': tel, 'Société': body.societe || '-', _subject: 'Demande de rappel — ' + nom, _template: 'table', _captcha: 'false' }) }).then(r => r.json()).then(j => String(j.success) !== 'false');
+    const res = await Promise.allSettled([saved, mailed]);
+    if (res.some(x => x.status === 'fulfilled' && x.value)) {
+      store.set(INV.who, '1'); f.hidden = true; $('#inv-ok').hidden = false; $('#inv-p').hidden = true;
+      setTimeout(() => { $('#invite').hidden = true; }, 4000);
+    } else { btn.disabled = false; btn.textContent = 'Réessayer'; }
+  });
+
 })();
 </script>
 </body>

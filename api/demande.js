@@ -1,6 +1,6 @@
 // Réception d'une demande de démo : enregistrée pour l'interface admin, avec avis par e-mail si Brevo est branché.
 const L = require('./_lib');
-const PROJETS = { demo: 'Démo LogiPro', web: 'Site web sur mesure', logiciel: 'Logiciel sur mesure', mobile: 'Application mobile / web' };
+const PROJETS = { demo: 'Démo LogiPro', web: 'Site web sur mesure', logiciel: 'Logiciel sur mesure', mobile: 'Application mobile / web', rappel: 'Demande de rappel' };
 
 module.exports = async (req, res) => {
   if (req.method !== 'POST') return L.send(res, 405, { error: 'POST attendu' });
@@ -11,9 +11,14 @@ module.exports = async (req, res) => {
       nom: L.clip(b.nom, 100), societe: L.clip(b.societe, 120), email: L.clip(b.email, 160).toLowerCase(),
       tel: L.clip(b.tel, 40), modules: (Array.isArray(b.modules) ? b.modules : []).map(m => L.clip(m, 40)).slice(0, 7),
       message: L.clip(b.message, 3000),
-      projet: ['demo', 'web', 'logiciel', 'mobile'].includes(b.projet) ? b.projet : 'demo'
+      projet: Object.keys(PROJETS).includes(b.projet) ? b.projet : 'demo'
     };
-    if (!d.nom || !d.societe || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(d.email)) return L.send(res, 400, { error: 'Nom, société et e-mail valides obligatoires' });
+    const mailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(d.email);
+    if (d.projet === 'rappel') {
+      // invitation « Un conseiller vous rappelle » : nom + un moyen de contact
+      if (!d.nom || (!mailOk && d.tel.replace(/\D/g, '').length < 7)) return L.send(res, 400, { error: 'Votre nom et un téléphone ou un e-mail valides' });
+      if (!mailOk) d.email = '';
+    } else if (!d.nom || !d.societe || !mailOk) return L.send(res, 400, { error: 'Nom, société et e-mail valides obligatoires' });
 
     const rl = L.P + 'dm:rl:' + L.hash(L.ip(req));
     const [n] = await L.pipe([['INCR', rl], ['EXPIRE', rl, 3600]]);
