@@ -237,7 +237,11 @@ module.exports = async (req, res) => {
     if (a === 'stats') return await stats(req, res);
     if (a === 'visits') {
       const raw = await L.redis('LRANGE', L.P + 'v:log', 0, Math.min(1000, +req.query.n || 200) - 1);
-      return L.send(res, 200, await nameVisits(raw.map(x => JSON.parse(x))));
+      // nombre de pages vues par chaque navigateur, pour repérer les visiteurs qui reviennent
+      const all = (await L.redis('LRANGE', L.P + 'v:log', 0, 4999)).map(x => JSON.parse(x));
+      const nv = {}; all.forEach(e => { if (e.k) nv[e.k] = (nv[e.k] || 0) + 1; });
+      const list = raw.map(x => JSON.parse(x)).map(e => e.k ? { ...e, nv: nv[e.k] } : e);
+      return L.send(res, 200, await nameVisits(list));
     }
     if (a === 'prospects') return await prospects(req, res);
     if (a === 'prospect') return await prospect(req, res);

@@ -182,6 +182,37 @@ main{padding:28px 32px 100px;max-width:1240px;width:100%}
   .vit .ce{grid-column:1/-1;justify-self:center;width:120px}
 }
 
+/* Finition */
+.card{transition:box-shadow .2s,border-color .2s}
+.kpi{position:relative;overflow:hidden;padding:18px 18px 16px}
+.kpi .ki{position:absolute;right:14px;top:14px;width:38px;height:38px;border-radius:11px;display:grid;place-items:center;background:var(--blue-l);color:var(--blue)}
+.kpi .ki svg{width:19px;height:19px}
+.kpi small{display:block;padding-right:44px;line-height:1.35}
+@media (max-width:860px){.kpi .ki{width:28px;height:28px;right:10px;top:10px;border-radius:8px}.kpi .ki svg{width:15px;height:15px}.kpi small{padding-right:30px}}
+.kpi.hl .ki{background:rgba(255,255,255,.16);color:#fff}
+.kpi.hl::after{content:"";position:absolute;right:-40px;bottom:-60px;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(243,156,30,.45),transparent 70%)}
+.top h2{letter-spacing:-.02em}
+.nav button.on{box-shadow:inset 3px 0 0 var(--orange)}
+.side{box-shadow:4px 0 24px -12px rgba(6,26,64,.5)}
+.av.sm{width:34px;height:34px;border-radius:10px;font-size:14px;flex:none}
+.av.g{background:var(--line);color:var(--ink-3)}
+.ppl{display:flex;flex-direction:column}
+.pp{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;padding:10px 6px;border:0;border-bottom:1px solid var(--line);background:none;text-align:left;cursor:pointer;border-radius:10px;width:100%;color:inherit}
+.pp:last-child{border-bottom:0}
+.pp:hover{background:var(--bg)}
+.pp-t{min-width:0}
+.pp-t b{display:block;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pp-t small{display:block;font-size:12.5px;color:var(--ink-3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pp-r{font-size:12.5px;color:var(--ink-3);white-space:nowrap}
+.vwho,.vanon{display:flex;gap:10px;align-items:center;text-align:left;background:none;border:0;padding:0;color:inherit;font:inherit;min-width:150px}
+.vwho{cursor:pointer}
+.vwho b{color:var(--vio)}
+.vwho:hover b{text-decoration:underline}
+.vwho small,.vanon small{display:block;font-size:12px;color:var(--ink-3)}
+.vanon b{font-weight:600;color:var(--ink-2)}
+.vnote{font-size:13px;color:var(--ink-3)}
+.pj{display:inline-block;margin-top:4px;font-size:11.5px;font-weight:700;color:var(--vio);background:var(--vio-l);border-radius:6px;padding:1px 7px}
+
 /* Prospects */
 .hint{font-size:13.5px;color:var(--ink-2);margin-bottom:14px;background:var(--blue-l);border-color:transparent}
 .src{font-size:11.5px;font-weight:700;padding:2px 8px;border-radius:999px;background:var(--line);color:var(--ink-2)}
@@ -280,13 +311,17 @@ main{padding:28px 32px 100px;max-width:1240px;width:100%}
 
     <!-- Tableau de bord -->
     <section data-view="dash">
-      <div class="top"><div><h2>Tableau de bord</h2><p>Visites du site et demandes de démo</p></div>
+      <div class="top"><div><h2 id="hello">Bonjour</h2><p id="today">Visites du site et demandes</p></div>
         <div class="seg" id="per"><button data-d="7">7 j</button><button data-d="30" class="on">30 j</button><button data-d="90">90 j</button></div></div>
       <div class="grid k4" style="margin-bottom:16px">
-        <div class="card kpi hl"><small>Demandes à traiter</small><b id="k-new">–</b><span id="k-dem">–</span></div>
-        <div class="card kpi"><small>Visiteurs uniques</small><b id="k-uni">–</b><span id="k-per">sur la période</span></div>
-        <div class="card kpi"><small>Pages vues</small><b id="k-views">–</b><span>sur la période</span></div>
-        <div class="card kpi"><small>Aujourd'hui</small><b id="k-today">–</b><span id="k-total">–</span></div>
+        <div class="card kpi hl"><i class="ki"><svg><use href="#i-mail"/></svg></i><small>Demandes à traiter</small><b id="k-new">–</b><span id="k-dem">–</span></div>
+        <div class="card kpi"><i class="ki"><svg><use href="#i-target"/></svg></i><small>Prospects actifs · 7 j</small><b id="k-pro">–</b><span id="k-pro2">visiteurs identifiés</span></div>
+        <div class="card kpi"><i class="ki"><svg><use href="#i-eye"/></svg></i><small>Visiteurs uniques</small><b id="k-uni">–</b><span id="k-per">sur la période</span></div>
+        <div class="card kpi"><i class="ki"><svg><use href="#i-dash"/></svg></i><small>Aujourd'hui</small><b id="k-today">–</b><span id="k-total">–</span></div>
+      </div>
+      <div class="grid k2" style="margin-bottom:16px">
+        <div class="card"><h3>Visiteurs identifiés récents <button class="btn gh sm" data-goto="pro">Tout voir</button></h3><div class="ppl" id="d-ppl"></div></div>
+        <div class="card"><h3>Dernières demandes <button class="btn gh sm" data-goto="dem">Tout voir</button></h3><div class="ppl" id="d-last"></div></div>
       </div>
       <div class="card" style="margin-bottom:16px">
         <h3>Site vitrine <a class="btn gh sm" href="/" target="_blank" rel="noopener">Ouvrir le site <svg><use href="#i-out"/></svg></a></h3>
@@ -321,8 +356,9 @@ main{padding:28px 32px 100px;max-width:1240px;width:100%}
 
     <!-- Visiteurs -->
     <section data-view="vis" hidden>
-      <div class="top"><div><h2>Visiteurs</h2><p>Les 200 dernières visites (vos propres visites ne sont pas comptées)</p></div><button class="btn gh sm" id="b-vref">Actualiser</button></div>
-      <div class="card tbl-wrap"><table class="tbl"><thead><tr><th>Date</th><th>Lieu</th><th>Page</th><th>Source</th><th>Appareil</th></tr></thead><tbody id="v-body"></tbody></table></div>
+      <div class="top"><div><h2>Visiteurs</h2><p>Les 200 dernières visites · vos propres visites ne sont pas comptées</p></div><button class="btn gh sm" id="b-vref">Actualiser</button></div>
+      <div class="tools"><div class="chips" id="v-f"><button class="chip on" data-f="all">Tous</button><button class="chip" data-f="id">Identifiés</button><button class="chip" data-f="anon">Anonymes</button></div><span class="vnote" id="v-note"></span></div>
+      <div class="card tbl-wrap"><table class="tbl"><thead><tr><th>Visiteur</th><th>Date</th><th>Lieu</th><th>Page</th><th>Source</th><th>Appareil</th></tr></thead><tbody id="v-body"></tbody></table></div>
     </section>
 
     <!-- Paramètres -->
@@ -373,6 +409,7 @@ main{padding:28px 32px 100px;max-width:1240px;width:100%}
 <script>
 (() => {
   const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const PROJ = { demo: 'Démo LogiPro', web: 'Site web sur mesure', logiciel: 'Logiciel sur mesure', mobile: 'Application mobile / web' };
   const STATUTS = ['nouvelle', 'en cours', 'répondue', 'démo planifiée', 'client', 'archivée'];
   const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const cls = s => 'st st-' + String(s).replace(/ /g, '-');
@@ -403,7 +440,7 @@ main{padding:28px 32px 100px;max-width:1240px;width:100%}
     try {
       me = await api('me');
       if (!me.ok) return show('login', me.firstSetup);
-      show('app'); $('#who').textContent = me.email; go('dash'); loadDem(true);
+      show('app'); $('#who').textContent = me.email; await loadDem(true); go('dash');
     } catch (e) { show('login'); if (e.message) { $('#l-err').hidden = false; $('#l-err').textContent = e.message; } }
   }
   $('#f-login').addEventListener('submit', async e => {
@@ -461,13 +498,39 @@ main{padding:28px 32px 100px;max-width:1240px;width:100%}
     const s = await api('stats', { q: '&days=' + days });
     const t = s.days[s.days.length - 1];
     $('#k-new').textContent = s.demandes.nouvelles; $('#k-dem').textContent = `${s.demandes.total} demande(s) au total`;
-    $('#k-uni').textContent = s.uniques; $('#k-views').textContent = s.views;
+    $('#k-uni').textContent = s.uniques; $('#k-per').textContent = `${s.views} page(s) vue(s) sur la période`;
     $('#k-today').textContent = t.u; $('#k-total').textContent = `${t.v} page(s) vue(s) · ${s.total} depuis le début`;
     const max = Math.max(1, ...s.days.map(d => d.v));
     $('#chart').innerHTML = s.days.map(d => `<div class="c" title="${new Date(d.d).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' })} : ${d.v} vue(s), ${d.u} visiteur(s)"><i style="height:${d.v / max * 100}%"></i><i class="u" style="height:${d.u / max * 100}%"></i></div>`).join('');
     const lab = d => new Date(d).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' });
     $('#axis').innerHTML = `<span>${lab(s.days[0].d)}</span><span>${lab(s.days[Math.floor(s.days.length / 2)].d)}</span><span>Aujourd'hui</span>`;
+    dashPeople();
     bars($('#t-pays'), s.pays, pays); bars($('#t-villes'), s.villes); bars($('#t-sources'), s.sources); bars($('#t-appareils'), s.appareils);
+  }
+
+  // Tableau de bord : qui est venu, qui a écrit
+  const hour = new Date().getHours();
+  $('#hello').textContent = hour < 18 ? 'Bonjour' : 'Bonsoir';
+  $('#today').textContent = new Date().toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }).replace(/^./, c => c.toUpperCase()) + ' · visites du site et demandes';
+  $$('[data-goto]').forEach(b => b.onclick = () => go(b.dataset.goto));
+  async function dashPeople() {
+    let list = [];
+    try { list = await api('prospects'); } catch {}
+    const act = list.filter(p => p.last && Date.now() - p.last < 7 * 864e5);
+    $('#k-pro').textContent = act.length;
+    $('#k-pro2').textContent = `${list.length} prospect(s) suivi(s) au total`;
+    const seen = list.filter(p => p.last).slice(0, 6);
+    $('#d-ppl').innerHTML = seen.length ? seen.map(p => `<button class="pp" data-pk="${esc(p.id)}"><span class="av sm">${esc((p.nom || '?')[0].toUpperCase())}</span>
+        <span class="pp-t"><b>${esc(p.nom)}${p.societe ? ' · ' + esc(p.societe) : ''}</b><small>${p.visites} visite(s)${p.modules?.length ? ' · ' + esc(p.modules.slice(0, 2).map(([m]) => MODS[m] || m).join(', ')) : ''}</small></span>
+        <span class="pp-r ${Date.now() - p.last < 864e5 ? 'hot' : ''}">${ago(p.last)}</span></button>`).join('')
+      : '<div class="empty">Aucun visiteur identifié pour l’instant. Envoyez des liens de suivi depuis « Prospects ».</div>';
+    $$('#d-ppl .pp').forEach(b => b.onclick = () => openPro(b.dataset.pk));
+    const last = data.slice(0, 5);
+    $('#d-last').innerHTML = last.length ? last.map(d => `<button class="pp" data-id="${d.id}"><span class="av sm">${esc((d.nom || '?')[0].toUpperCase())}</span>
+        <span class="pp-t"><b>${esc(d.nom)} · ${esc(d.societe)}</b><small>${esc(PROJ[d.projet || 'demo'])}</small></span>
+        <span class="pp-r"><span class="${cls(d.statut)}">${esc(d.statut)}</span></span></button>`).join('')
+      : '<div class="empty">Aucune demande pour l’instant.</div>';
+    $$('#d-last .pp').forEach(b => b.onclick = () => openDem(b.dataset.id));
   }
 
   // Demandes
@@ -492,7 +555,7 @@ main{padding:28px 32px 100px;max-width:1240px;width:100%}
     $('#d-list').innerHTML = rows.length ? rows.map(d => `
       <button class="dm" data-id="${d.id}">
         <span class="av">${esc((d.nom || '?').trim()[0].toUpperCase())}</span>
-        <span style="min-width:0"><b>${esc(d.nom)} · ${esc(d.societe)}</b><span class="sub">${esc(d.email)}${d.modules?.length ? ' · ' + esc(d.modules.join(', ')) : ''}</span></span>
+        <span style="min-width:0"><b>${esc(d.nom)} · ${esc(d.societe)}</b><span class="sub">${esc(d.email)}${d.modules?.length ? ' · ' + esc(d.modules.join(', ')) : ''}</span>${d.projet && d.projet !== 'demo' ? `<span class="pj">${esc(PROJ[d.projet])}</span>` : ''}</span>
         <span class="rt"><span class="${cls(d.statut)}">${esc(d.statut)}</span>${fmt(d.t)}</span>
       </button>`).join('') : '<div class="card empty">Aucune demande ici.</div>';
     $$('#d-list .dm').forEach(b => b.onclick = () => openDem(b.dataset.id));
@@ -513,7 +576,8 @@ main{padding:28px 32px 100px;max-width:1240px;width:100%}
           <dl class="info">
             <dt>E-mail</dt><dd><a href="mailto:${esc(d.email)}">${esc(d.email)}</a></dd>
             <dt>Téléphone</dt><dd>${d.tel ? `<a href="tel:${esc(tel)}">${esc(d.tel)}</a>` : '—'}</dd>
-            <dt>Modules</dt><dd>${esc(d.modules?.join(', ') || 'Tous')}</dd>
+            <dt>Projet</dt><dd>${esc(PROJ[d.projet || 'demo'])}</dd>
+            ${(d.projet || 'demo') === 'demo' ? `<dt>Modules</dt><dd>${esc(d.modules?.join(', ') || 'Tous')}</dd>` : ''}
             <dt>Lieu</dt><dd>${d.c ? pays(d.c) + (d.ci ? ' · ' + esc(d.ci) : '') : '—'}</dd>
             <dt>Appareil</dt><dd>${esc([d.dv, d.os].filter(Boolean).join(' · ') || '—')}</dd>
           </dl>
@@ -670,9 +734,21 @@ main{padding:28px 32px 100px;max-width:1240px;width:100%}
   // Visiteurs
   $('#b-vref').onclick = () => loadVis();
   async function loadVis() {
-    const v = await api('visits', { q: '&n=200' });
-    $('#v-body').innerHTML = v.length ? v.map(e => `<tr><td>${fmt(e.t)}</td><td>${pays(e.c)}${e.ci ? '<br><small>' + esc(e.ci) + '</small>' : ''}${e.who ? `<br><button class="who" data-pk="${esc(e.who.id)}">${esc(e.who.nom)}${e.who.societe ? ' · ' + esc(e.who.societe) : ''}</button>` : ''}</td><td>${esc(e.p)}</td><td>${esc(e.r || 'Accès direct')}</td><td>${esc(e.dv)}<br><small>${esc(e.os)} · ${esc(e.b)}</small></td></tr>`).join('') : '<tr><td colspan="5" class="empty">Aucune visite enregistrée pour le moment.</td></tr>';
-    $$('#v-body .who').forEach(b => b.onclick = () => openPro(b.dataset.pk));
+    vis = await api('visits', { q: '&n=200' });
+    renderVis();
+  }
+  let vis = [], vf = 'all';
+  $$('#v-f .chip').forEach(c => c.onclick = () => { vf = c.dataset.f; $$('#v-f .chip').forEach(x => x.classList.toggle('on', x === c)); renderVis(); });
+  // Visiteur anonyme : un code court et stable par navigateur, pour reconnaître ceux qui reviennent
+  const code = k => k ? '#' + k.slice(0, 4).toUpperCase() : '';
+  function renderVis() {
+    const v = vis.filter(e => vf === 'all' || (vf === 'id' ? e.who : !e.who));
+    const n = vis.filter(e => e.who).length;
+    $('#v-note').textContent = `${n} visite(s) identifiée(s) sur ${vis.length}`;
+    $('#v-body').innerHTML = v.length ? v.map(e => `<tr><td>${e.who
+        ? `<button class="vwho" data-pk="${esc(e.who.id)}"><span class="av sm">${esc((e.who.nom || '?')[0].toUpperCase())}</span><span><b>${esc(e.who.nom)}</b><small>${esc(e.who.societe || 'Prospect')}</small></span></button>`
+        : `<span class="vanon"><span class="av sm g">?</span><span><b>Anonyme ${esc(code(e.k))}</b><small>${e.nv > 1 ? `revenu · ${e.nv} pages vues` : 'première visite'}</small></span></span>`}</td><td>${fmt(e.t)}</td><td>${pays(e.c)}${e.ci ? '<br><small>' + esc(e.ci) + '</small>' : ''}</td><td>${esc(e.p)}</td><td>${esc(e.r || 'Accès direct')}</td><td>${esc(e.dv)}<br><small>${esc(e.os)} · ${esc(e.b)}</small></td></tr>`).join('') : '<tr><td colspan="6" class="empty">Aucune visite ici pour le moment.</td></tr>';
+    $$('#v-body .vwho').forEach(b => b.onclick = () => openPro(b.dataset.pk));
   }
 
   // Paramètres

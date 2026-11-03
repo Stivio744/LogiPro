@@ -295,6 +295,52 @@ form.demo .btn{grid-column:1/-1;justify-content:center}
 .hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
 form.demo .btn[disabled]{opacity:.7;cursor:wait;transform:none}
 
+/* Hero : lien sur mesure */
+.hero-alt{flex-basis:100%;margin-top:6px;font-size:14.5px;color:rgba(255,255,255,.8);text-decoration:none}
+.hero-alt b{color:var(--orange-400);font-weight:700}
+.hero-alt:hover b{text-decoration:underline}
+
+/* Création sur mesure */
+.mesure{background:radial-gradient(1200px 500px at 50% -10%,var(--blue-100),transparent 70%),#fff}
+.svcs{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.svc{position:relative;background:#fff;border:1px solid var(--line);border-radius:var(--radius-lg);padding:28px 24px 24px;display:flex;flex-direction:column;box-shadow:var(--shadow-sm);transition:transform .25s,box-shadow .25s,border-color .25s}
+.svc:hover{transform:translateY(-4px);box-shadow:var(--shadow);border-color:#cfdcf0}
+.svc::before{content:"";position:absolute;inset:0 0 auto;height:4px;border-radius:var(--radius-lg) var(--radius-lg) 0 0;background:linear-gradient(90deg,var(--blue-500),var(--orange-500));opacity:0;transition:opacity .25s}
+.svc:hover::before{opacity:1}
+.svc-ic{width:52px;height:52px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(135deg,var(--navy-700),var(--blue-500));color:#fff;margin-bottom:18px;box-shadow:0 10px 20px -10px rgba(31,111,209,.7)}
+.svc-ic svg{width:26px;height:26px}
+.svc h3{font-size:19px;margin-bottom:10px}
+.svc p{font-size:14.5px;color:var(--ink-2);margin:0 0 16px}
+.svc ul{list-style:none;padding:0;margin:0 0 20px;display:flex;flex-direction:column;gap:8px;font-size:14px;color:var(--ink)}
+.svc li{display:flex;gap:8px;align-items:flex-start}
+.svc li svg{width:16px;height:16px;flex:none;margin-top:3px;color:var(--blue-500)}
+.svc-go{margin-top:auto;display:inline-flex;align-items:center;gap:8px;font-family:var(--font-head);font-weight:700;font-size:14.5px;color:var(--blue-500);text-decoration:none}
+.svc-go svg{width:16px;height:16px;transition:transform .2s}
+.svc-go:hover svg{transform:translateX(4px)}
+.proc{margin-top:64px;background:var(--navy-900);border-radius:var(--radius-lg);padding:40px;color:#fff;position:relative;overflow:hidden}
+.proc::after{content:"";position:absolute;right:-120px;top:-120px;width:360px;height:360px;border-radius:50%;background:radial-gradient(circle,rgba(243,156,30,.25),transparent 70%)}
+.proc-head .kicker{color:var(--orange-400)}
+.proc-head h3{font-size:26px;margin:6px 0 28px;color:#fff}
+.proc ol{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,1fr);gap:20px;position:relative;z-index:1}
+.proc li{border-top:2px solid rgba(255,255,255,.15);padding-top:18px}
+.proc li span{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--orange-500);color:#1d1300;font-family:var(--font-head);font-weight:800;margin-bottom:12px}
+.proc li b{display:block;font-family:var(--font-head);font-size:17px;margin-bottom:6px}
+.proc li p{margin:0;font-size:14px;color:rgba(255,255,255,.72)}
+.promise{margin-top:24px;display:grid;grid-template-columns:repeat(3,1fr) auto;gap:20px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:var(--radius-lg);padding:22px 28px;box-shadow:var(--shadow-sm)}
+.promise b{display:block;font-family:var(--font-head);font-size:16px}
+.promise span{font-size:14px;color:var(--ink-3)}
+@media (max-width:1080px){.svcs{grid-template-columns:repeat(2,1fr)}.promise{grid-template-columns:1fr 1fr}.promise .btn{grid-column:1/-1;justify-self:start}}
+@media (max-width:720px){.svcs,.proc ol,.promise{grid-template-columns:1fr}.proc{padding:28px 22px}.proc-head h3{font-size:22px}}
+
+/* Formulaire : type de projet */
+.seg-p{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;background:var(--bg-soft);border:1px solid var(--line);border-radius:14px;padding:5px}
+.seg-p label{position:relative;cursor:pointer}
+.seg-p input{position:absolute;opacity:0;pointer-events:none}
+.seg-p span{display:block;text-align:center;padding:9px 6px;border-radius:10px;font-size:13.5px;font-weight:600;color:var(--ink-2);transition:background .2s,color .2s}
+.seg-p input:checked+span{background:var(--navy-800);color:#fff;box-shadow:var(--shadow-sm)}
+.seg-p input:focus-visible+span{outline:3px solid var(--orange-400)}
+@media (max-width:560px){.seg-p{grid-template-columns:1fr 1fr}}
+
 /* Footer */
 footer{background:var(--navy-900);color:rgba(255,255,255,.7);padding:72px 0 32px;margin-top:110px}
 .ft{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:40px}
@@ -308,7 +354,8 @@ footer{background:var(--navy-900);color:rgba(255,255,255,.7);padding:72px 0 32px
 .priv summary{cursor:pointer;color:#fff;font-weight:600;padding:14px 0;list-style-position:inside}
 .priv p{margin:0 0 14px;max-width:none}
 .priv[open]{padding-bottom:6px}
-.form-legal{grid-column:1/-1;font-size:12px;color:var(--ink-3);text-align:center;margin:-6px 0 0}
+[hidden]{display:none!important}
+form.demo .form-legal{grid-column:1/-1;font-size:12px;line-height:1.5;color:var(--ink-3);text-align:center;margin:-6px 0 0}
 .form-legal a{color:inherit;text-decoration:underline}
 .ft-bot{border-top:1px solid rgba(255,255,255,.1);margin-top:48px;padding-top:24px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:13.5px}
 
@@ -372,6 +419,7 @@ footer{background:var(--navy-900);color:rgba(255,255,255,.7);padding:72px 0 32px
       <a href="#explorer">Fonctionnalités</a>
       <a href="#plateforme">Plateforme</a>
       <a href="#securite">Sécurité</a>
+      <a href="#sur-mesure">Sur mesure</a>
       <a href="#faq">FAQ</a>
     </nav>
     <div class="hdr-cta">
@@ -401,6 +449,7 @@ footer{background:var(--navy-900);color:rgba(255,255,255,.7);padding:72px 0 32px
     <div class="hero-ctas">
       <a class="btn btn-primary" href="#contact">Demander une démo gratuite <svg><use href="#i-arrow"/></svg></a>
       <a class="btn btn-ghost" href="#modules">Découvrir les 7 modules</a>
+      <a class="hero-alt" href="#sur-mesure">Un site ou un logiciel sur mesure ? <b>Nous le créons pour vous →</b></a>
     </div>
     <div class="hero-stats">
       <div><strong>7</strong><span>logiciels métiers connectés</span></div>
@@ -753,6 +802,62 @@ footer{background:var(--navy-900);color:rgba(255,255,255,.7);padding:72px 0 32px
   </div>
 </section>
 
+<!-- ===== Création sur mesure ===== -->
+<section class="sec mesure" id="sur-mesure">
+  <div class="wrap">
+    <div class="sec-head center rv">
+      <span class="kicker">Création sur mesure</span>
+      <h2>Votre site ou votre logiciel, conçu à votre goût</h2>
+      <p>L’équipe qui a créé LogiPro conçoit aussi votre site web, votre application ou votre logiciel métier, selon vos préférences : votre image, votre façon de travailler, votre budget.</p>
+    </div>
+    <div class="svcs">
+      <article class="svc rv">
+        <div class="svc-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4M2 8h20"/></svg></div>
+        <h3>Sites web professionnels</h3>
+        <p>Site vitrine, catalogue, réservation ou boutique en ligne : à votre image, rapide, bien référencé sur Google et parfait sur téléphone.</p>
+        <ul><li><svg><use href="#i-check"/></svg>Design unique, à vos couleurs</li><li><svg><use href="#i-check"/></svg>Formulaires, WhatsApp, carte, prise de rendez-vous</li><li><svg><use href="#i-check"/></svg>Nom de domaine, hébergement et sécurité HTTPS</li></ul>
+        <a class="svc-go" href="#contact" data-projet="web">Parler de mon projet <svg><use href="#i-arrow"/></svg></a>
+      </article>
+      <article class="svc rv">
+        <div class="svc-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg></div>
+        <h3>Logiciels de gestion sur mesure</h3>
+        <p>Stock, facturation, flotte, production, RH… Nous construisons l’outil qui suit exactement vos procédures, comme nous l’avons fait pour LogiPro.</p>
+        <ul><li><svg><use href="#i-check"/></svg>Vos processus, vos documents, vos règles</li><li><svg><use href="#i-check"/></svg>Accès par rôle et historique complet</li><li><svg><use href="#i-check"/></svg>Reprise de vos fichiers Excel existants</li></ul>
+        <a class="svc-go" href="#contact" data-projet="logiciel">Parler de mon projet <svg><use href="#i-arrow"/></svg></a>
+      </article>
+      <article class="svc rv">
+        <div class="svc-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M11 18h2"/></svg></div>
+        <h3>Applications mobiles et web</h3>
+        <p>Une application pour vos clients ou vos équipes de terrain : Android, iPhone et ordinateur, installable sans magasin d’applications.</p>
+        <ul><li><svg><use href="#i-check"/></svg>Fonctionne même avec une connexion faible</li><li><svg><use href="#i-check"/></svg>Notifications, photos, signature, GPS</li><li><svg><use href="#i-check"/></svg>Une seule application pour tous les écrans</li></ul>
+        <a class="svc-go" href="#contact" data-projet="mobile">Parler de mon projet <svg><use href="#i-arrow"/></svg></a>
+      </article>
+      <article class="svc rv">
+        <div class="svc-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 11-3-6.7L21 8"/><path d="M21 3v5h-5"/><path d="M12 7v5l3 2"/></svg></div>
+        <h3>Automatisation et intégration</h3>
+        <p>Relier vos outils entre eux et supprimer les ressaisies : tableaux de bord, Google Sheets, e-mails automatiques, paiements, API.</p>
+        <ul><li><svg><use href="#i-check"/></svg>Tableaux de bord en temps réel</li><li><svg><use href="#i-check"/></svg>Synchronisation Excel et Google Sheets</li><li><svg><use href="#i-check"/></svg>Alertes et rapports envoyés automatiquement</li></ul>
+        <a class="svc-go" href="#contact" data-projet="integration">Parler de mon projet <svg><use href="#i-arrow"/></svg></a>
+      </article>
+    </div>
+    <div class="proc">
+      <div class="proc-head rv"><span class="kicker">Notre méthode</span><h3>De l’idée à la mise en ligne, en 4 étapes</h3></div>
+      <ol>
+<li class="rv"><span>1</span><b>Écoute</b><p>Nous découvrons votre activité, vos préférences et votre budget. Vous recevez un devis clair.</p></li>
+<li class="rv"><span>2</span><b>Maquette</b><p>Vous voyez l’écran avant le développement. On ajuste jusqu’à ce qu’il vous plaise.</p></li>
+<li class="rv"><span>3</span><b>Réalisation</b><p>Développement par étapes, avec une version à tester à chaque étape.</p></li>
+<li class="rv"><span>4</span><b>Mise en ligne</b><p>Installation, formation de vos équipes, puis maintenance et évolutions.</p></li>
+      </ol>
+    </div>
+    <div class="promise rv">
+      <div><b>Vous restez propriétaire</b><span>de votre site, de votre code et de vos données.</span></div>
+      <div><b>Un seul interlocuteur</b><span>du devis à la maintenance, à Madagascar.</span></div>
+      <div><b>Adapté à tous les écrans</b><span>ordinateur, tablette et téléphone.</span></div>
+      <a class="btn btn-primary" href="#contact" data-projet="web">Demander un devis gratuit <svg><use href="#i-arrow"/></svg></a>
+    </div>
+  </div>
+</section>
+
 <!-- ===== FAQ ===== -->
 <section class="sec" id="faq">
   <div class="wrap">
@@ -766,6 +871,7 @@ footer{background:var(--navy-900);color:rgba(255,255,255,.7);padding:72px 0 32px
       <details class="rv"><summary>LogiPro gère-t-il plusieurs sociétés ?</summary><p>Oui. Chaque société dispose de son propre espace, de ses utilisateurs, de ses rôles et de sa devise de comptabilité (MGA, EUR ou USD), tout en restant administrée depuis une console unique.</p></details>
       <details class="rv"><summary>Faut-il installer quelque chose ?</summary><p>Non. LogiPro fonctionne dans le navigateur. Il peut aussi s'installer en un clic comme application sur Android, iPhone et ordinateur, et une version de bureau Windows est disponible pour travailler sur le poste.</p></details>
       <details class="rv"><summary>Mes données sont-elles protégées ?</summary><p>Les accès sont personnels et vérifiés à chaque requête, les mots de passe sont chiffrés, les données sensibles sont masquées par défaut et toutes les corrections importantes sont inscrites dans un historique qui ne peut pas être effacé.</p></details>
+      <details class="rv"><summary>Pouvez-vous créer un site ou un logiciel qui n’a rien à voir avec LogiPro ?</summary><p>Oui. Nous réalisons des sites web, des applications et des logiciels de gestion sur mesure pour tous les secteurs : commerce, hôtellerie, santé, éducation, associations, services… Décrivez votre projet dans le formulaire ci-dessous en choisissant « Site web » ou « Logiciel sur mesure » : vous recevez un devis gratuit.</p></details>
       <details class="rv"><summary>Comment se passe la mise en place ?</summary><p>Après une démonstration, nous configurons vos sociétés, vos utilisateurs et vos paramètres métier, reprenons vos données existantes et formons vos équipes. Contactez-nous pour en discuter.</p></details>
     </div>
   </div>
@@ -776,13 +882,14 @@ footer{background:var(--navy-900);color:rgba(255,255,255,.7);padding:72px 0 32px
   <div class="wrap">
     <div class="cta rv">
       <div>
-        <span class="kicker">Passez à LogiPro</span>
-        <h2>Prêt à simplifier toute votre gestion ?</h2>
-        <p>Demandez une démonstration personnalisée : nous vous montrons LogiPro sur vos propres cas d'usage.</p>
+        <span class="kicker">Parlons de votre projet</span>
+        <h2>Une démo LogiPro, un site ou un logiciel ?</h2>
+        <p>Démonstration personnalisée de LogiPro, ou devis gratuit pour votre site web, votre application ou votre logiciel sur mesure : nous vous répondons rapidement.</p>
         <ul>
           <li><svg><use href="#i-check"/></svg>Démonstration gratuite et sans engagement</li>
           <li><svg><use href="#i-check"/></svg>Reprise de vos données Excel existantes</li>
           <li><svg><use href="#i-check"/></svg>Accompagnement et formation de vos équipes</li>
+          <li><svg><use href="#i-check"/></svg>Devis gratuit pour tout projet sur mesure</li>
         </ul>
         <div class="coords">
           <a class="coord" href="mailto:chilanceratiarson@gmail.com"><span class="ci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 6l-10 7L2 6"/></svg></span><span><small>E-mail</small><b>chilanceratiarson@gmail.com</b></span></a>
@@ -791,11 +898,19 @@ footer{background:var(--navy-900);color:rgba(255,255,255,.7);padding:72px 0 32px
         </div>
       </div>
       <form class="demo" id="demo" novalidate>
+        <div class="fld full"><label id="l-proj">Votre projet</label>
+          <div class="seg-p" role="radiogroup" aria-labelledby="l-proj">
+            <label><input type="radio" name="projet" value="demo" checked><span>Démo LogiPro</span></label>
+            <label><input type="radio" name="projet" value="web"><span>Site web</span></label>
+            <label><input type="radio" name="projet" value="logiciel"><span>Logiciel</span></label>
+            <label><input type="radio" name="projet" value="mobile"><span>Application</span></label>
+          </div>
+        </div>
         <div class="fld"><label for="f-nom">Nom complet</label><input id="f-nom" name="nom" autocomplete="name" required></div>
         <div class="fld"><label for="f-soc">Société</label><input id="f-soc" name="societe" autocomplete="organization" required></div>
         <div class="fld"><label for="f-mail">E-mail professionnel</label><input id="f-mail" name="email" type="email" autocomplete="email" required></div>
         <div class="fld"><label for="f-tel">Téléphone</label><input id="f-tel" name="tel" type="tel" autocomplete="tel" placeholder="+261 …"></div>
-        <div class="fld full"><label id="l-mods">Modules qui vous intéressent</label>
+        <div class="fld full" id="fld-mods"><label id="l-mods">Modules qui vous intéressent</label>
           <div class="chips" role="group" aria-labelledby="l-mods">
             <label><input type="checkbox" name="m" value="Comptabilité">Comptabilité</label>
             <label><input type="checkbox" name="m" value="Gestion Carburant">Carburant</label>
@@ -945,23 +1060,35 @@ footer{background:var(--navy-900);color:rgba(255,255,255,.7);padding:72px 0 32px
   };
   addEventListener('scroll', count, { passive: true }); count();
 
+  // Type de projet : les modules ne concernent que la démo LogiPro
+  const PROJETS = { demo: 'Démo LogiPro', web: 'Site web sur mesure', logiciel: 'Logiciel sur mesure', mobile: 'Application mobile / web' };
+  const HINTS = { demo: "Taille de votre flotte, nombre d'utilisateurs, sociétés…", web: 'Votre activité, les pages souhaitées, un site que vous aimez, votre délai…', logiciel: 'Ce que le logiciel doit gérer, le nombre d’utilisateurs, vos fichiers actuels…', mobile: 'Pour qui est l’application, ce qu’elle doit faire, téléphone ou ordinateur…' };
+  function setProjet(v) {
+    const r = $(`#demo input[name="projet"][value="${v}"]`); if (r) r.checked = true;
+    $('#fld-mods').hidden = v !== 'demo';
+    $('#f-msg').placeholder = HINTS[v];
+    $('#f-send').firstChild.textContent = v === 'demo' ? 'Envoyer ma demande ' : 'Demander mon devis gratuit ';
+  }
+  $$('#demo input[name="projet"]').forEach(r => r.addEventListener('change', () => setProjet(r.value)));
+  $$('[data-projet]').forEach(a => a.addEventListener('click', () => setProjet(a.dataset.projet)));
+
   // Demo form → e-mail direct (FormSubmit)
   $('#demo').addEventListener('submit', async e => {
     e.preventDefault();
     const f = e.target, note = $('#f-note'), btn = $('#f-send');
     if (!f.checkValidity()) { f.reportValidity(); return; }
-    const d = new FormData(f), m = d.getAll('m');
+    const d = new FormData(f), projet = d.get('projet') || 'demo', m = projet === 'demo' ? d.getAll('m') : [];
     if (d.get('_honey')) return;
     const payload = {
       'Nom': d.get('nom'), 'Société': d.get('societe'), 'E-mail': d.get('email'),
-      'Téléphone': d.get('tel') || '-', 'Modules': m.length ? m.join(', ') : 'Tous', 'Besoin': d.get('message') || '-',
-      _subject: 'Demande de démo LogiPro — ' + d.get('societe'), _replyto: d.get('email'), _template: 'table', _captcha: 'false'
+      'Projet': PROJETS[projet], 'Téléphone': d.get('tel') || '-', 'Modules': projet !== 'demo' ? '-' : m.length ? m.join(', ') : 'Tous', 'Besoin': d.get('message') || '-',
+      _subject: PROJETS[projet] + ' — ' + d.get('societe'), _replyto: d.get('email'), _template: 'table', _captcha: 'false'
     };
     btn.disabled = true; note.className = 'form-note'; note.textContent = 'Envoi en cours…';
     // 1) enregistrement pour l'interface admin, 2) copie par e-mail (FormSubmit) ; l'un des deux suffit
     const saved = fetch('/api/demande', {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ nom: d.get('nom'), societe: d.get('societe'), email: d.get('email'), tel: d.get('tel'), modules: m, message: d.get('message'), _honey: d.get('_honey'), k: visitorKey() })
+      body: JSON.stringify({ nom: d.get('nom'), societe: d.get('societe'), email: d.get('email'), tel: d.get('tel'), modules: m, projet, message: d.get('message'), _honey: d.get('_honey'), k: visitorKey() })
     }).then(r => r.ok);
     const mailed = fetch('https://formsubmit.co/ajax/' + CONTACT_EMAIL, {
       method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify(payload)
